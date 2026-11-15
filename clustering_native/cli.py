@@ -20,6 +20,7 @@ def dispatch(request):
     s = Session(directory)
     handlers = {
         "respond": s.respond,
+        "respond_observed": s.respond_observed,
         "record_visual_evidence": s.record_visual_evidence,
         "propose_method_choices": s.propose_method_choices,
         "candidate_guidance": s.candidate_guidance,
