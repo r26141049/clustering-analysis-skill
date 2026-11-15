@@ -1,0 +1,13 @@
+interface:
+  display_name: Clustering Analysis — Four-Method rc6
+  short_description: Four methods with scoped gates and selection evidence
+  default_prompt: 以四法 rc6 分析資料；先完成 EDA 並等待前處理批准。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

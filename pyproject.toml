@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clustering-analysis-python-native-rc6"
+version = "1.0.0rc6.post1"
+description = "Stage-gated exploratory clustering candidate"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<3", "pandas>=2.2,<4", "scipy>=1.10,<2", "scikit-learn>=1.3,<2", "matplotlib>=3.6,<4", "Pillow>=9,<13"]
+
+[project.scripts]
+clustering-native-rc6 = "clustering_native.cli:main"
+
+[tool.setuptools]
+packages = ["clustering_native"]
+
+[tool.setuptools.package-data]
+clustering_native = ["assets/*.py", "assets/*.md", "assets/*.txt"]

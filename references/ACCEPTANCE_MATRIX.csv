@@ -1,0 +1,169 @@
+rule_id,stage,requirement,basis_kind,source_anchor,test_or_evidence,verification_status,priority
+S1-01,1,自動辨識儲存 dtype 與統計變數型態、分析角色，不以整數直接視為連續,Product + literature,Kaufman 1990 PDF 42-43;47-48,缺資料字典、編碼、ID、多型態 fixture,I,P1
+S1-02,1,不確定欄標記不確定、可修正，字典和實值衝突應阻止靜默確定,Product,使用者已核准,歧義欄位／錯誤字典 E2E,I,P1
+S1-03,1,缺失 n/％、比例分母、完全缺失欄並列,Product,使用者已核准,含 missing fixture E2E,I,P1
+S1-04,1,重複 ID、完整列與去 ID 特徵重複應區分,Product,使用者已核准,合法 duplicate fixture E2E,I,P1
+S1-05,1,極端值為潛在標記，禁止無同意刪除,Methodological + product,Milligan 1988 PDF 3;22 (conditional),outlier retained fixture,I,P1
+S1-06,1,尺度調整應根據距離、分布與研究目的而非固定 Z-score,Methodological,Milligan 1988 PDF 3;22,mixed range and high-outlier cases,I,P1
+S1-07,1,僅在變數型態相容時採用關聯分析，不對所有欄位強制 Pearson,Methodological,Kaufman 1990 PDF 42-48,mixed corr fixture,I,P1
+S1-08,1,圖內英文、對話繁體中文、預設少量重點圖且圖和文字相鄰,Product,使用者已核准,image/render visual QA,I,P1
+S1-09,1,前處理在核准前不動原始檔，使用分析副本,Product,使用者已核准,hash before/after approval E2E,I,P1
+S1-10,1,A 核准才進 Stage 2，B/C 保持 Stage 1,Product,使用者已核准,test_no_jump_without_gate (partial),V,P1
+S2-01,2,四方法逐項提供 data-specific EDA 數值及理由,Product,使用者已核准,Iris mixed no-structure E2E,I,P1
+S2-02,2,僅用 適合／有條件適用／不適合／資訊不足，沒有虛構量表,Product,使用者已核准,stage2 output contract,I,P1
+S2-03,2,標準 K-means 只用有意義數值歐氏特徵,Methodological,Hartigan 1979 PDF 3; Milligan 1988 PDF 3,encoded nominal refusal E2E,I,P1
+S2-04,2,傳統 Ward 需歐氏幾何，不可默用 Gower + Ward,Methodological,Ward 1963 PDF 3,test_ward_gower_guard,V,P1
+S2-05,2,DBSCAN 的密度、雜訊及 eps/min_samples 理由,Methodological,Ester 1996 PDF 2-4,density diagnostics trigger E2E,I,P1
+S2-07,2,PAM 支援已定義合理差異度，Gower 的類別/ordinal/range 有明確設定,Methodological,Gower 1971 PDF 4; Kaufman 1990 PDF 47-48,test_synthetic_data_gower_matches_prior_approved_stage3 (partial),V,P1
+S2-08,2,資訊不足時不得聲稱自然群存在、容許補診斷或停止,Methodological + product,Rousseeuw 1987 PDF 3; 使用者已核准,no-structure E2E,I,P1
+S2-09,2,僅鎖定一方法，不執行跨方法競賽,Product,使用者已核准,stage2 method lock E2E,I,P1
+S2-10,2,更換方法若需重處理資料，返回 Stage 1,Product,使用者已核准,test_changed_stage_invalidates_downstream (partial),V,P1
+S3-01,3,候選 K/參數清楚區分 EDA-supported 與 exploratory-only,Product,使用者已核准,candidate generator E2E,I,P1
+S3-02,3,K-means 記錄 Lloyd/Hartigan 實作、n_init、seed、WCSS,Methodological + product,Hartigan 1979 PDF 3,test_kmeans_objective_recompute_and_n_init,V,P1
+S3-03,3,Hierarchical linkage 與 metric 相容，保留切樹與設定,Methodological,Ward 1963 PDF 3,test_hierarchical_ward_numeric; test_ward_gower_guard,V,P1
+S3-04,3,DBSCAN eps/min_samples 可探索，不指定 K；允許全雜訊,Methodological,Ester 1996 PDF 2-4,test_dbscan_all_noise_is_valid_outcome,V,P1
+S3-05,3,DBSCAN 保存核心/邊界/雜訊而非假稱全為群,Methodological,Ester 1996 PDF 3,test_dbscan_core_border_noise,V,P1
+S3-08,3,PAM BUILD+SWAP 固定 tie rule、局部 1-swap 最優,Methodological,Kaufman 1990 PDF 115-116,test_build_swap_bruteforce_global_on_small_fixture,V,P1
+S3-09,3,Gower nominal 用 exact-match，不能數值編碼,Methodological,Gower 1971 PDF 4; Kaufman 1990 PDF 47,test_nominal_codes_not_numeric,V,P1
+S3-10,3,Gower ordinal 明定 levels 和轉換約定,Methodological,Kaufman 1990 PDF 42-43;48,test_ordinal_declared_rank; test_ordinal_requires_explicit_order,V,P1
+S3-11,3,Gower symmetric/asymmetric binary 分流，double-zero 適用性明確,Methodological,Gower 1971 PDF 4; Kaufman 1990 PDF 47,test_asymmetric_binary_double_absence_excluded,V,P1
+S3-12,3,Gower 缺失做成對分母排除，無比較直接拒絕,Methodological,Gower 1971 PDF 4,test_pairwise_missing_denominator; test_uncomparable_pair_is_rejected_by_models,V,P1
+S3-13,3,常數 numeric 不除以零，政策與原因留紀錄,Implementation policy,Gower 1971 PDF 4 (range); design choice,test_constant_numeric_is_excluded_and_reported,V,P1
+S3-14,3,權重必須正值有限、覆蓋恰好核准的特徵,Implementation policy,使用者已核准,test_weights_and_bad_weights,V,P1
+S3-15,3,前後確認和範圍鎖定；候選模型失敗不能靜默替代,Product,使用者已核准,stage3 UI E2E,I,P1
+S3-16,3,O(n²) 記憶體估計及時間上限先核准,Implementation policy,計算複雜度原則,large n budget E2E,I,P1
+S4-01,4,距離相容的 Silhouette（precomputed Gower）及無效群數處理,Methodological,Rousseeuw 1987 PDF 3-5,test_silhouette_precomputed_is_identical_to_sklearn,V,P1
+S4-02,4,一群、全單例、全噪音等無效情況回缺失而非 0,Methodological,Rousseeuw 1987 PDF 3-5,test_silhouette_one_cluster_returns_missing_not_zero,V,P1
+S4-03,4,K-means WCSS 遞減不是選 K 充分條件,Methodological,Tibshirani 2001 PDF 1 (visual); caution,Iris WCSS E2E,I,P1
+S4-04,4,CH/DB 不能對一般混合型 Gower 直接套 sklearn Euclidean實作,Methodological + implementation,Calinski 1974 PDF 11; Davies 1979 PDF 1-3,Gower nonmetric invalid indicator E2E,I,P1
+S4-05,4,DBSCAN noise 標籤/群數與輪廓適用性處理,Methodological,Ester 1996 PDF 3,noise metrics E2E,I,P1
+S4-07,4,整體 ARI 比較同一唯一 ID 集合且可重排,Methodological,Hubert 1985 PDF 8-9,test_ari_reorders_ids; test_ari_rejects_different_ids,V,P1
+S4-08,4,subsample Jaccard 只在共同 ID 集合正確群組匹配,Methodological + implementation,Hennig 2007 PDF 4 (related but distinct design),test_jaccard_best_matching_on_common_ids,V,P1
+S4-09,4,如稱 Hennig 2007 bootstrap：with-replacement + 原群誘導與最大 Jaccard,Methodological,Hennig 2007 PDF 4 (p.261),full bootstrap duplicate-ID and matching E2E,L,P1
+S4-10,4,敏感性變體不得冒充正式資料或直接改寫核准參數,Product,使用者已核准,outlier transform sensitivity E2E,I,P1
+S4-11,4,指標衝突不設任意複合評分、不強迫選最佳群,Product + methodological,Rousseeuw 1987 PDF 3; 使用者已核准,test_no_final_K_branch (partial),V,P1
+S4-12,4,最優候選在搜尋邊界標示可擴範圍，但不可暗自擴,Product,使用者已核准,K at boundary E2E,I,P1
+S5-01,5,有 final model 時報告原始單位 numeric profile 與有效 n,Product + methodology,使用者已核准,profile baseline E2E,I,P1
+S5-02,5,類別頻數/比例、序位分布與比例分母正確,Product,使用者已核准,mixed profile E2E,I,P1
+S5-03,5,PAM medoid 為實際 row、Kmeans centroid 是平均中心,Methodological,Kaufman 1990 PDF 115-116; Hartigan 1979 PDF 3,medoid ID included in demo partial,I,P1
+S5-04,5,DBSCAN noise 不強制分到群,Methodological,Ester 1996 PDF 3,noise report E2E,I,P1
+S5-06,5,輔助標籤與模型特徵分開，避免資料洩漏,Product,使用者已核准,external label audit E2E,I,P1
+S5-07,5,無最終 K 不產生冒充正式分類的 final assignments,Product,使用者已核准,test_no_final_K_branch (contract only),V,P1
+S5-08,5,不得用特徵再描述的天真 p 值宣稱獨立推論,Methodological caution,selection issue (not yet matched to supplied 14 PDF),report logic E2E,L,P1
+S5-09,5,Python-only QMD、MD、figures、CSV、config、environment 與 reference,Product,使用者已核准,cross-file consistency E2E,I,P1
+S5-10,5,Quarto CLI 成功才可宣稱 rendered，否則 honest Markdown fallback,Product,使用者已核准,quarto actual render + fallback E2E,I,P1
+S5-11,5,報告、圖、CSV、群數及方法設定 cross-check,Product,使用者已核准,round-trip clean directory E2E,I,P1
+S5-12,5,避免將敏感識別資訊不必要地輸出或發佈,Product,資料治理原則,privacy/log output E2E,I,P1
+S5-13,5,最後核准才算完成，修改早階段撤銷下游權限,Product,使用者已核准,test_changed_stage_invalidates_downstream (partial),V,P1
+X-01,cross,Hopkins/VAT 在完成專門文獻前不得寫死判斷閾值,Research pending,not among 14 fully verified source set,special literature audit,L,P2
+X-02,cross,Gap statistic 需要與資料型態相符的參考分布與選 K 規則,Research pending,Tibshirani 2001 PDF 1-2 (visual extraction issue),formula and simulation reproduction,L,P2
+X-03,cross,安裝啟動和完整使用者門控端到端與插件格式驗證,Product,使用者已核准,install activation E2E,I,P1
+IMG-MIN-01,cross,Every generated Stage1–5 PNG individually openable in current response; ZIP/inline/text alone insufficient,Product,2026-11-15 human requirement,attachment construction tests plus human open/download at every stage,I,P0
+IMG-ADV-01,cross,Chat inline display independent of PNG generation and attachments,Product,2026-11-15 Iris human FAIL,no retry of failed inline routes; human visual acceptance,I,P1
+IMG-MIN-S1-TIME,1,Plan B Stage 1 全部三張 PNG 在前處理批准前主動交付,Product,2026-11-15 本對話使用者真人驗收,05_elliptical_gaussian(1).csv 正常流程；無需補交；詳見 PLAN_B_ACCEPTANCE.md,PASS,P0
+IMG-MIN-S1-OPEN,1,eda_numeric.png / eda_geometry.png / eda_categories.png 真人逐一開啟真實圖表,Product,2026-11-15 本對話使用者真人驗收,三檔可正常開啟查看；不是檔名、無效連結或佔位符,PASS,P0
+IMG-MIN-S2-S5-OPEN,2-5,本輪 Stage 2～5 全部 PNG 真人逐一開啟,Product,2026-11-15 範圍限制,有檔案及交付紀錄；尚未取得逐檔真人開啟確認；最終更新請見新增Stage2～4 PASS及Stage5 PNG未驗證拆分列,NOT VERIFIED,P0
+IMG-MIN-S1-S4-TIME,1-4,本輪 Stage1～4 全部對應圖表在決策前主動交付,Product,2026-11-15 本對話使用者最終真人驗收,RELEASE_READINESS_REVIEW.md；不擴張未明確確認的單檔範圍,PASS,P0
+IMG-MIN-S2-S4-OPEN,2-4,本輪 Stage2方法診斷、Stage3候選及Stage4品質與穩定性PNG真人開啟（階段層級）,Product,2026-11-15 本對話使用者最終真人驗收,RELEASE_READINESS_REVIEW.md；不擴張未明確確認的單檔範圍,PASS,P0
+HTML-S5-HUMAN,5,離線HTML真人閱讀統計圖含K=3最終分群圖,Product,2026-11-15 本對話使用者最終真人驗收,RELEASE_READINESS_REVIEW.md；不擴張未明確確認的單檔範圍,PASS,P0
+PNG-S5-HUMAN,5,Stage5個別PNG附件逐檔真人開啟（不以HTML替代）,Product,2026-11-15 本對話使用者最終真人驗收,RELEASE_READINESS_REVIEW.md；不擴張未明確確認的單檔範圍,NOT VERIFIED,P0
+IMG-PLANB-FINAL,1-5,Plan B 圖片交付整體真人驗收,Product,2026-11-15 使用者最終明確驗收,Stage1～4 PNG準時／開啟、Stage5 HTML閱讀及final_partition.png正確K=3；非逐檔回條推定,PASS,P0
+PNG-S5-FINAL-OPEN,5,final_partition.png 真人開啟並正確呈現K-means K=3,Product,2026-11-15 本輪使用者確認,三群分割圖片正確,PASS,P0
+FINAL-REGRESSION-GAPS,cross,四方法與Session/CLI合成fixture定向缺口補測,Engineering,2026-11-15 Final_Three_Conditions_Review,30個不同案例最終PASS；首輪例外期待錯誤及單項重驗均保留；非原33基線替代,PASS,P0
+FINAL-PERSONAL-INSTALL,cross,personal Skill實體來源／runtime與候選一致及實際Python匯入,Engineering,skills.read與environment_and_import.json,provider根目錄及17個必要模組__file__/hash一致；文件差異另列,PASS,P0
+FINAL-PILLOW-ISOLATED,cross,既有依賴範圍下隔離Pillow匯入PNG與附件,Engineering,Pillow12.3.0 venv；run_1/3/6,全宣告specifier合規；PNG產生／完整解碼及3項原附件測試通過；全域不變,PASS,P0
+FINAL-BASELINE-EVIDENCE,cross,原完整runner／33基線與歷史適用性證據,Engineering,現行SKILL工程驗收規格及acceptance.py,12個archive與5個技能歷史版本未找回；不以新定向綠燈冒充原完整驗收,NOT VERIFIED,P0
+HIST-REF-01,cross,test_ari_rejects_different_ids,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_remaining_refs.py:RemainingReferences.test_distinct_observation_sets_rejected；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-02,cross,test_ari_reorders_ids,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_ari_unique_common_ids；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-03,cross,test_asymmetric_binary_double_absence_excluded,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_binary_symmetry_distinct_denominator；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-04,cross,test_build_swap_bruteforce_global_on_small_fixture,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_pam_fixture_optimum_and_ties；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-05,cross,test_changed_stage_invalidates_downstream,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:Integration.test_revision_clears_results_and_figures; test_targeted_no_fit.py:GateRegression.test_six_gates_and_downstream_revocation；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-06,cross,test_constant_numeric_is_excluded_and_reported,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_pairwise_missing_constant_and_undefined；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-07,cross,test_dbscan_all_noise_is_valid_outcome,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_dbscan_all_noise；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-08,cross,test_dbscan_core_border_noise,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_dbscan_core_border_noise；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-09,cross,test_hierarchical_ward_numeric,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_ward_actual_tree；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-10,cross,test_jaccard_best_matching_on_common_ids,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_remaining_refs.py:RemainingReferences.test_jaccard_hand_calculated_common_ids；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-11,cross,test_kmeans_objective_recompute_and_n_init,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_kmeans_objective_and_groups; test_remaining_refs.py:RemainingReferences.test_native_n_init_forwarded；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-12,cross,test_no_final_K_branch,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_remaining_refs.py:NoFinalModel.test_null_final_report_has_no_final_assignments；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-13,cross,test_no_jump_without_gate,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:Integration.test_no_fit_before_permission; Integration.test_cli_reload_reject_exit_and_execution_log；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-14,cross,test_nominal_codes_not_numeric,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_gower_nominal_not_numeric_codes；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-15,cross,test_ordinal_declared_rank,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_ordinal_declared_levels；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-16,cross,test_ordinal_requires_explicit_order,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_ordinal_declared_levels；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-17,cross,test_pairwise_missing_denominator,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_pairwise_missing_constant_and_undefined；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-18,cross,test_silhouette_one_cluster_returns_missing_not_zero,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_undefined_silhouette_not_zero; test_dbscan_single_group；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-19,cross,test_silhouette_precomputed_is_identical_to_sklearn,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_remaining_refs.py:RemainingReferences.test_silhouette_reference_on_fixed_partition；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-20,cross,test_synthetic_data_gower_matches_prior_approved_stage3,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,仍未覆蓋；；原33成員身分及原始結果未驗證,NOT VERIFIED,P0
+HIST-REF-21,cross,test_uncomparable_pair_is_rejected_by_models,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_remaining_refs.py:RemainingReferences.test_undefined_gower_rejected_by_model_entry；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-22,cross,test_ward_gower_guard,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_targeted_no_fit.py:MethodContracts.test_ward_gower_rejected；原33成員身分及原始結果未驗證,PASS,P0
+HIST-REF-23,cross,test_weights_and_bad_weights,Historical reference,rc6既有ACCEPTANCE_MATRIX引用,替代測試已驗證；test_completion.py:FourMethodBoundaries.test_positive_weights；原33成員身分及原始結果未驗證,PASS,P0
+HIST-GMM-SCOPE,cross,GMM正式規格移除；無原case清單不能逐case編號,Product,rc5 Four-Method要求,正式不適用，不標PASS；原case ID未取回,NOT APPLICABLE,P1
+ALT-S1-01,1,自動辨識儲存 dtype 與統計變數型態、分析角色，不以整數直接視為連續,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_roles_integer_binary_uncertainty,PASS,P0
+ALT-S1-02,1,不確定欄標記不確定、可修正，字典和實值衝突應阻止靜默確定,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_dictionary_conflict_not_silently_accepted,PASS,P0
+ALT-S1-03,1,缺失 n/％、比例分母、完全缺失欄並列,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_missing_denominators_and_all_missing,PASS,P0
+ALT-S1-04,1,重複 ID、完整列與去 ID 特徵重複應區分,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_duplicate_types_separated,PASS,P0
+ALT-S1-05,1,極端值為潛在標記，禁止無同意刪除,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_outlier_retained_no_default_scaling_and_original_immutable,PASS,P0
+ALT-S1-06,1,尺度調整應根據距離、分布與研究目的而非固定 Z-score,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_scaling_and_transform_explicit；已批准Elliptical前處理方案,PASS,P0
+ALT-S1-07,1,僅在變數型態相容時採用關聯分析，不對所有欄位強制 Pearson,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_association_excludes_nominal_codes,PASS,P0
+ALT-S1-08,1,圖內英文、對話繁體中文、預設少量重點圖且圖和文字相鄰,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有Plan B真人證詞與12頁流程PDF、圖內英文／繁中解釋（人工審閱）,PASS,P0
+ALT-S1-09,1,前處理在核准前不動原始檔，使用分析副本,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_outlier_retained_no_default_scaling_and_original_immutable；run2 Integration.test_input_immutable,PASS,P0
+ALT-S1-10,1,A 核准才進 Stage 2，B/C 保持 Stage 1,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_stage1_B_C_discard_plan_without_advancing；既有Gate明確批准案例,PASS,P0
+ALT-S2-01,2,四方法逐項提供 data-specific EDA 數值及理由,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_stage2_four_rows_labels_recommendation_no_models；既有Elliptical方法表與EDA數值,PASS,P0
+ALT-S2-02,2,僅用 適合／有條件適用／不適合／資訊不足，沒有虛構量表,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_stage2_four_rows_labels_recommendation_no_models,PASS,P0
+ALT-S2-03,2,標準 K-means 只用有意義數值歐氏特徵,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_numeric_geometry_rejects_encoded_nominal；原MethodContracts.test_kmeans_lloyd,PASS,P0
+ALT-S2-04,2,傳統 Ward 需歐氏幾何，不可默用 Gower + Ward,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,原MethodContracts.test_ward_gower_rejected,PASS,P0
+ALT-S2-05,2,DBSCAN 的密度、雜訊及 eps/min_samples 理由,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有rc6 TwoMoons參數來源、密度圖、研究快照與數值重算；原MethodContracts.test_dbscan_no_k,PASS,P0
+ALT-S2-07,2,PAM 支援已定義合理差異度，Gower 的類別/ordinal/range 有明確設定,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_gower_independent_mixed_weighted_expected_matrix；既有PAM/Gower研究計算,PASS,P0
+ALT-S2-08,2,資訊不足時不得聲稱自然群存在、容許補診斷或停止,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_stage2_four_rows_labels_recommendation_no_models（natural_groups_proven=false）；規格／報告限制人工核對,PASS,P0
+ALT-S2-09,2,僅鎖定一方法，不執行跨方法競賽,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,原Gate與run2 Integration.test_no_fit_before_permission；正常方法選單真人流程PASS；相容介面另列FAIL,PASS,P0
+ALT-S2-10,2,更換方法若需重處理資料，返回 Stage 1,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,原GateRegression.test_six_gates_and_downstream_revocation；run2修訂清除案例；相容介面另列FAIL,PASS,P0
+ALT-S3-01,3,候選 K/參數清楚區分 EDA-supported 與 exploratory-only,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_candidate_provenance_and_budget_required；既有研究完整candidate_plan,PASS,P0
+ALT-S3-02,3,K-means 記錄 Lloyd/Hartigan 實作、n_init、seed、WCSS,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_kmeans_objective_and_groups；run8 RemainingReferences.test_native_n_init_forwarded,PASS,P0
+ALT-S3-03,3,Hierarchical linkage 與 metric 相容，保留切樹與設定,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_ward_actual_tree/test_average_gower_allowed；Ward-Gower拒絕案例,PASS,P0
+ALT-S3-04,3,DBSCAN eps/min_samples 可探索，不指定 K；允許全雜訊,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_dbscan_all_noise/test_dbscan_single_group；原DBSCAN設定拒絕K,PASS,P0
+ALT-S3-05,3,DBSCAN 保存核心/邊界/雜訊而非假稱全為群,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_dbscan_core_border_noise,PASS,P0
+ALT-S3-08,3,PAM BUILD+SWAP 固定 tie rule、局部 1-swap 最優,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_pam_fixture_optimum_and_ties（小fixture窮舉與單swap檢查）,PASS,P0
+ALT-S3-09,3,Gower nominal 用 exact-match，不能數值編碼,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_gower_nominal_not_numeric_codes；run9獨立Gower矩陣,PASS,P0
+ALT-S3-10,3,Gower ordinal 明定 levels 和轉換約定,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_ordinal_declared_levels；run9獨立Gower矩陣,PASS,P0
+ALT-S3-11,3,Gower symmetric/asymmetric binary 分流，double-zero 適用性明確,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_binary_symmetry_distinct_denominator；run9獨立Gower矩陣,PASS,P0
+ALT-S3-12,3,Gower 缺失做成對分母排除，無比較直接拒絕,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run8 RemainingReferences.test_undefined_gower_rejected_by_model_entry；run9獨立缺失分母矩陣,PASS,P0
+ALT-S3-13,3,常數 numeric 不除以零，政策與原因留紀錄,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_pairwise_missing_constant_and_undefined；run9常數全局略過,PASS,P0
+ALT-S3-14,3,權重必須正值有限、覆蓋恰好核准的特徵,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_positive_weights；run9獨立加權手算矩陣,PASS,P0
+ALT-S3-15,3,前後確認和範圍鎖定；候選模型失敗不能靜默替代,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 Integration.test_failure_revokes_execution_persistently/test_candidates_reply_cannot_confirm_results；真人分開批准,PASS,P0
+ALT-S3-16,3,O(n²) 記憶體估計及時間上限先核准,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_budget_row_and_memory_limits/test_timeout_propagates_without_fit；既有階段預算,PASS,P0
+ALT-S4-01,4,距離相容的 Silhouette（precomputed Gower）及無效群數處理,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run8 RemainingReferences.test_silhouette_reference_on_fixed_partition；既有PAM儲存標籤silhouette重算,PASS,P0
+ALT-S4-02,4,一群、全單例、全噪音等無效情況回缺失而非 0,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_undefined_silhouette_not_zero/test_dbscan_all_noise/test_dbscan_single_group,PASS,P0
+ALT-S4-03,4,K-means WCSS 遞減不是選 K 充分條件,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有研究選群理由與規格人工核對；WCSS非自動選K；run9 final_explanation/no_auto_selection,PASS,P0
+ALT-S4-04,4,CH/DB 不能對一般混合型 Gower 直接套 sklearn Euclidean實作,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_pam_gower_no_euclidean_scores/test_average_gower_allowed,PASS,P0
+ALT-S4-05,4,DBSCAN noise 標籤/群數與輪廓適用性處理,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 DBSCAN core/border/noise案例；TwoMoons有效n與排noise指標重算,PASS,P0
+ALT-S4-07,4,整體 ARI 比較同一唯一 ID 集合且可重排,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run2 FourMethodBoundaries.test_ari_unique_common_ids；run8 RemainingReferences.test_distinct_observation_sets_rejected,PASS,P0
+ALT-S4-08,4,subsample Jaccard 只在共同 ID 集合正確群組匹配,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run8 RemainingReferences.test_jaccard_hand_calculated_common_ids,PASS,P0
+ALT-S4-09,4,如稱 Hennig 2007 bootstrap：with-replacement + 原群誘導與最大 Jaccard,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,未提供with-replacement bootstrap；保留common-ID subsampling正確命名,NOT RUN,P2
+ALT-S4-10,4,敏感性變體不得冒充正式資料或直接改寫核准參數,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_unbudgeted_sensitivity_rejected；run2超額diagnostics拒絕／失敗預算消耗,PASS,P0
+ALT-S4-11,4,指標衝突不設任意複合評分、不強迫選最佳群,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run8 NoFinalModel.test_null_final_report_has_no_final_assignments；run9 final_explanation_all_candidates_required_and_no_auto_selection；衝突理由人工核對,PASS,P0
+ALT-S4-12,4,最優候選在搜尋邊界標示可擴範圍，但不可暗自擴,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有rc6選群evidence.boundary_analysis與研究核准理由；無自動擴fit；run9預算／參數來源案例,PASS,P0
+ALT-S5-01,5,有 final model 時報告原始單位 numeric profile 與有效 n,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_profiles_raw_units_missing_ordinal_denominators_and_noise；既有研究原始單位profiles,PASS,P0
+ALT-S5-02,5,類別頻數/比例、序位分布與比例分母正確,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_profiles_raw_units_missing_ordinal_denominators_and_noise,PASS,P0
+ALT-S5-03,5,PAM medoid 為實際 row、Kmeans centroid 是平均中心,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有PAM實際medoid_positions與目標值重算；Kmeans中心／WCSS核對,PASS,P0
+ALT-S5-04,5,DBSCAN noise 不強制分到群,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_profiles_raw_units_missing_ordinal_denominators_and_noise；TwoMoons輸出Noise與指標觀測集核對,PASS,P0
+ALT-S5-06,5,輔助標籤與模型特徵分開，避免資料洩漏,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_excluded_id_and_label_not_features,PASS,P0
+ALT-S5-07,5,無最終 K 不產生冒充正式分類的 final assignments,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run8 NoFinalModel.test_null_final_report_has_no_final_assignments,PASS,P0
+ALT-S5-08,5,不得用特徵再描述的天真 p 值宣稱獨立推論,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有研究與report.py限制人工審閱，不提供後選p值獨立驗證宣稱,PASS,P0
+ALT-S5-09,5,Python-only QMD、MD、figures、CSV、config、environment 與 reference,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有六份研究manifest/快照/日誌/PNG與MD、QMD、HTML一致性核對,PASS,P0
+ALT-S5-10,5,Quarto CLI 成功才可宣稱 rendered，否則 honest Markdown fallback,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有render_status=MARKDOWN_FALLBACK，沒有冒稱render；fallback是正式規格允許分支,PASS,P0
+ALT-S5-11,5,報告、圖、CSV、群數及方法設定 cross-check,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,既有六份研究manifest全部匹配、數值重算；run9 final_delivery_confirmation_syncs_all_reports,PASS,P0
+ALT-S5-12,5,避免將敏感識別資訊不必要地輸出或發佈,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 DataAndDistances.test_excluded_id_and_label_not_features；報告僅匯出selected features的人工原碼核對,PASS,P0
+ALT-S5-13,5,最後核准才算完成，修改早階段撤銷下游權限,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 PlanningAndDelivery.test_final_delivery_confirmation_syncs_all_reports；run2 refresh/token失效／報告竄改拒絕,PASS,P0
+ALT-X-01,cross,Hopkins/VAT 在完成專門文獻前不得寫死判斷閾值,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,Hopkins/VAT未提供；不新增固定門檻要求,NOT RUN,P2
+ALT-X-02,cross,Gap statistic 需要與資料型態相符的參考分布與選 K 規則,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,Gap未提供；不新增驗證功能,NOT RUN,P2
+ALT-X-03,cross,安裝啟動和完整使用者門控端到端與插件格式驗證,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,personal Skill來源與17模組實際匯入雜湊PASS；Pillow12.3隔離環境PASS；Plugin非正式範圍,PASS,P0
+ALT-IMG-MIN-01,cross,Every generated Stage1–5 PNG individually openable in current response; ZIP/inline/text alone insufficient,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,Plan B使用者真人確認、階段PDF、原附件測試三項PASS,PASS,P0
+ALT-IMG-ADV-01,cross,Chat inline display independent of PNG generation and attachments,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,歷史內嵌FAIL；非Plan B必要功能,FAIL,P2
+ALT-RC6-COMPAT-01,2,保留propose_method相容介面；接受既有選單payload後，修訂或拒絕必須正常處理,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,"run9 test_stage2_method_lock_and_geometry_revision ERROR；run10獨立4筆fixture重現KeyError(method),exit1",FAIL,P0
+ALT-RC6-SESSION-PERSIST,cross,Session/CLI重載、並行修訂、失敗消耗、修訂失效與錯誤日誌,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 test_cli_concurrent_revision_serializes_and_persists；原run2多項Session／CLI案例及run5定向重驗,PASS,P0
+ALT-RC6-GOWER-INDEPENDENT,3,以獨立可核對預期值替代已遺失Stage3 Gower fixture之現行功能驗收,rc6 replacement proposal,使用者授權提出替代方案；尚未批准歷史豁免,run9 test_gower_independent_mixed_weighted_expected_matrix,PASS,P0
+LOST-original_33_cases_and_original_assertions,historical,original_33_cases_and_original_assertions,User confirmation,2026-11-15 使用者明確確認清除,不算PASS，不再要求找回；替代基準需批准,HISTORICAL EVIDENCE LOST,P1
+LOST-historical_applicability_and_port_manifests,historical,historical_applicability_and_port_manifests,User confirmation,2026-11-15 使用者明確確認清除,不算PASS，不再要求找回；替代基準需批准,HISTORICAL EVIDENCE LOST,P1
+LOST-original_Stage3_Gower_fixture,historical,original_Stage3_Gower_fixture,User confirmation,2026-11-15 使用者明確確認清除,不算PASS，不再要求找回；替代基準需批准,HISTORICAL EVIDENCE LOST,P1
+COMPAT01-FIX,2,合法menu與single-method payload相容、嚴格schema與綁定驗證,rc6.post1修復,RC6_COMPAT01_REVIEW.md,run11 before FAIL；run12/13/14 after PASS；歷史失敗保留,PASS,P0
+COMPAT01-RELEASE,release,歷史豁免與替代基準需使用者正式批准,User decision,HISTORICAL_WAIVER_FOR_APPROVAL.md,尚未批准，不由修復授權推定；NOT ACCEPTED,PENDING USER APPROVAL,P0
+REL-POST1-USER-ACCEPTED,release,personal Skill Plan B替代驗收及歷史豁免已批准,User explicit decision,RELEASE_ACCEPTANCE.json,60必要功能PASS；僅豁免遺失歷史原件；Plugin不在正式範圍,ACCEPTED,P0

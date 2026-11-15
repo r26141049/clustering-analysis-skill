@@ -1,0 +1,8 @@
+# Candidate compatibility targets; not a claim of tested support for every version.
+numpy>=1.24,<3
+pandas>=2.2,<4
+scipy>=1.10,<2
+scikit-learn>=1.3,<2
+
+matplotlib>=3.6,<4
+Pillow>=9,<13
