@@ -8,6 +8,20 @@
 
 ---
 
+
+## 下載與安裝
+
+**目前版本：v1.0.0rc6.post1**
+
+[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post1/Clustering_rc6_post1_Plugin_Candidate.zip)
+
+本專案提供可供下載的 Skill 套件，請依使用的 AI Agent 執行環境所支援的方式進行安裝或匯入。
+
+目前已完成 ChatGPT Personal Skill 的功能驗收；其他 AI Agent 的完整相容性尚未驗證。
+
+---
+
+
 ## 一、專案介紹
 
 Clustering Analysis Skill 是一套協助使用者進行 **無監督分群研究(Unsupervised Clustering Analysis)** 的分析工具。
