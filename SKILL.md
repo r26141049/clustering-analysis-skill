@@ -1,5 +1,15 @@
 ---
 name: clustering-analysis-python-native-rc6
+description: 原本完整的英文 description 保持不變
+---
+
+
+> **v1.0.0rc6.post2 — RC6-GATE-BRIDGE-01 修復候選，NOT ACCEPTED（尚待真人安裝與 B→A 驗收）。**
+> 原 post1 ACCEPTED 及 references/RELEASE_ACCEPTANCE.json 為先前版本歷史紀錄，不代表 post2 已批准。
+> 無平台訊息 ID 的實際新使用者回覆請走 `respond_observed`；本機收據不等於平台認證點擊。詳見 references/RC6_GATE_BRIDGE01_REVIEW.md。
+
+---
+name: clustering-analysis-python-native-rc6
 description: Perform exploratory clustering of uploaded data with Python Native, real EDA, one user-selected method (K-means, Hierarchical, DBSCAN or PAM/Gower), explicit Stage 1–5 confirmations, compatible quality and subsampling stability diagnostics, and reproducible Markdown/Python Quarto reports. Use for clustering data and interpreting groups, not theory-only questions. Candidate v1.0; verify runtime and installation separately.
 ---
 
@@ -64,6 +74,8 @@ Retain actual CLI execution_events.jsonl and reproduction logs. Direct Python AP
 Use the host's Python runtime and bundled `clustering_native` module. Set the working directory to this skill directory or add it to PYTHONPATH. Call `python -m clustering_native --request /absolute/request.json`; the agent writes requests and executes them. Never ask ordinary users to run code, install R, or configure an analysis environment. Check imports first. If SciPy/sklearn are unavailable, report the specific unavailable action; keep EDA and review artifacts, do not fabricate model results or replace the algorithm.
 
 Read `references/OPERATOR_GUIDE.md` for action schemas, explicit parameter examples and recovery. Use one action per invocation; reload `status` after each action. Store each analysis in a fresh directory. Keep original input snapshots private. Do not modify session JSON to bypass a gate.
+
+For a *new, directly observed* user reply when the host exposes no actual user-turn/message ID, use CLI `respond_observed(item,token,response)`; do not supply `message_id`. This action generates one local invocation receipt and explicitly labels it `AGENT_ASSERTED_NEW_USER_TURN_NOT_PLATFORM_VERIFIED`, **not** platform-authenticated click or identity evidence. Call it only after the user actually answers the currently displayed, still-valid pending proposal. Keep the complete exact original user text, never infer an A from earlier conversation or reuse a prior reply, and verify the current token via `status`. If no fresh user response is observable, stop; do not call this action. A request for an explanation (e.g. `B：為甚麼保留？`) is CLARIFY rather than an approval; leave the pending proposal in place and let a subsequent fresh A approve it. A real revision needs an updated proposal and fresh approval. The explicit reference path `respond(item,token,response,message_id,source=user)` remains supported when the host/operator has a genuine distinct reply reference; both paths run the **same unchanged Gate**. The fallback receipt offers local transaction traceability, not cryptographic proof that a different human turn occurred; do not mislabel its evidence.
 
 Use RC4 `respond(item, token, response, message_id, source=user)` for actual replies. Preserve the complete original reply. It returns APPROVE / REJECT / REVISE / CLARIFY; supported natural-language approvals and short A both work. Read the RC3 section in `references/OPERATOR_GUIDE.md`. The deterministic recognizer accepts only unambiguous clauses referring to the current pending scope; never manually set APPROVE to override CLARIFY, extract an A substring, rewrite a reply, or invent a user message. If a phrase is unsupported or uncertain, ask one concise clarification. A revision takes precedence and revokes affected downstream state; present the changed proposal before requesting fresh authorization. Legacy UNCERTAIN remains accepted as a non-advancing CLARIFY-compatible state. This is local provenance, not identity authentication.
 
@@ -139,3 +151,8 @@ For the latest review based on the actual uploaded Source/Plugin/Delivery archiv
 ## RC6-COMPAT-01 candidate revision
 
 Current candidate version is 1.0.0rc6.post1. Read references/RC6_COMPAT01_REVIEW.md for the two supported method payload schemas and validated compatibility repair. The normal menu and all Hard Gates remain unchanged. Historical missing baselines are HISTORICAL EVIDENCE LOST under the user-authorized replacement proposal, never PASS. Release remains NOT ACCEPTED until explicit approval of references/HISTORICAL_WAIVER_FOR_APPROVAL.md; permission to repair is not waiver approval. Independent Plugin installation remains unverified and is outside the confirmed personal Skill release scope.
+
+
+## RC6-GATE-BRIDGE-01 candidate addendum (v1.0.0rc6.post2)
+
+This is an independently packaged **UNACCEPTED** integration repair candidate; the original v1.0.0rc6.post1 Personal Skill release and its evidence are retained without modification. The new operator-observed receipt bridge and B-question -> fresh A regression must be manually tested in a clean installation before any acceptance claim. Older release acceptance records under references are historical to post1, **not** approval for post2. The fallback is not platform identity authentication. No statistical algorithm, Gate invariant, token policy, Stage1–5 transition, PNG specification or research result has been changed.

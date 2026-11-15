@@ -640,6 +640,36 @@ class Session:
         return {**parsed, "advanced": bool(advanced)}
 
     @transaction
+    def respond_observed(self, item, token, response):
+        """Receive a *new, directly observed* user reply when no host ID exists.
+
+        This is an operator assertion of a fresh user turn, not proof of a
+        platform-verified click or identity.  The local receipt identifies this
+        single backend invocation; the original reply, current proposal token,
+        stage and all six Gate checks remain mandatory.  Do not invoke this
+        method for inferred, repeated, rewritten or assistant-generated text.
+        """
+        import uuid
+        if not isinstance(response, str) or not response.strip():
+            raise PermissionError('Directly observed nonempty user reply required')
+        if not isinstance(token, str) or not token:
+            raise PermissionError('Current pending proposal token required')
+        if item not in self.gate.TRANSITIONS:
+            raise ValueError('Unknown approval item')
+        receipt = 'local-agent-observed:' + uuid.uuid4().hex
+        # This event deliberately states its weaker provenance, rather than
+        # claiming the host provided a platform message_id or signed click.
+        self.gate.event('local_reply_receipt', item=item, message_id=receipt,
+                        provenance='AGENT_ASSERTED_NEW_USER_TURN_NOT_PLATFORM_VERIFIED',
+                        response_hash=digest(response), proposal_token_hash=digest(token))
+        result = self.respond(item, token, response, receipt, source='user')
+        self.save()
+        return {**result, 'receipt': {
+            'message_id': receipt,
+            'provenance': 'AGENT_ASSERTED_NEW_USER_TURN_NOT_PLATFORM_VERIFIED',
+            'platform_authenticated': False}}
+
+    @transaction
     def diagnose_approved(self):
         """Execute previously disclosed routine work, without another approval gate."""
         self._expect("S4_REVIEW")

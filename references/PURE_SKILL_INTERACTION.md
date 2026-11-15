@@ -1,3 +1,7 @@
+### Post2 新增回覆接收路徑（待真人驗收）
+
+若當前聊天介面未提供可傳遞的訊息識別碼，但操作者實際看到新使用者回覆，請用 `respond_observed(item,token,response)` 接入相同 Python Gate；本機回覆收據只代表操作者宣告觀察到本輪回覆，不是平台核實的點擊或身分。不得把上一輪 A 重用為新批准，B 的詢問與真正修改需先區分，所有 token、提案雜湊、版本和六階段綁定保留。完整說明見 `references/OPERATOR_GUIDE.md`。
+
 ## Required PNG attachments and separate inline acceptance (2026-11-15)
 
 This section supersedes older inline-first/fallback-only instructions throughout this package.
