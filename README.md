@@ -13,7 +13,7 @@
 
 **目前版本：v1.0.0rc6.post1**
 
-[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post1/Clustering_rc6_post1_Plugin_Candidate.zip)
+[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post2/Clustering_rc6_post2_GateBridge_Plugin_Release.zip)
 
 本專案提供可供下載的 Skill 套件，請依使用的 AI Agent 執行環境所支援的方式進行安裝或匯入。
 
