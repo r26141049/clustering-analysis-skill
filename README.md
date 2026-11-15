@@ -11,7 +11,7 @@
 
 ## 下載與安裝
 
-**目前版本：v1.0.0rc6.post1**
+**目前版本：v1.0.0rc6.post2**
 
 [⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post2/Clustering_rc6_post2_GateBridge_Plugin_Release.zip)
 
