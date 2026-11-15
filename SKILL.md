@@ -1,3 +1,9 @@
+---
+name: clustering-analysis-python-native-rc6
+description: 原本完整的英文 description 保持不變
+---
+
+
 > **v1.0.0rc6.post2 — RC6-GATE-BRIDGE-01 修復候選，NOT ACCEPTED（尚待真人安裝與 B→A 驗收）。**
 > 原 post1 ACCEPTED 及 references/RELEASE_ACCEPTANCE.json 為先前版本歷史紀錄，不代表 post2 已批准。
 > 無平台訊息 ID 的實際新使用者回覆請走 `respond_observed`；本機收據不等於平台認證點擊。詳見 references/RC6_GATE_BRIDGE01_REVIEW.md。
