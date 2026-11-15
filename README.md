@@ -2,7 +2,7 @@
 
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
-**版本：** `v1.0.0rc6.post1`  
+**版本：** `v1.0.0rc6.post2`  
 **開發語言：** Python  
 **研究領域：** Unsupervised Learning、Cluster Analysis、Applied Statistics
 
