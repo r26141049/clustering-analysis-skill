@@ -141,7 +141,7 @@ def build_report(session, destination):
     previews = preview_assets(preview_paths)
     write_json(out/"figure_previews.json", previews)
     # These are actual retained files only, never reconstructed console transcripts.
-    log_names = ("execution_events.jsonl", "execution_stdout.log", "execution_stderr.log")
+    log_names = ("execution_events.jsonl", "execution_stdout.log", "execution_stderr.log", "fit_runtime_events.jsonl")
     retained_logs=[]
     for name in log_names:
         source=session.directory/name
@@ -238,7 +238,7 @@ def build_report(session, destination):
             render["reason"] = "Quarto render timed out; Markdown fallback retained"
     write_json(out/"render_status.json", render)
     (out/"README.md").write_text("# 閱讀與重現\n\n直接閱讀 analysis.md；analysis.qmd 僅含 Python。\n"
-        "reproduce.py --verify 是開發端驗收入口，會以已核准快照重新擬合並比較結果；一般使用者由助理代為執行，不需安裝 R。\n"
+        "reproduce.py --verify 是開發端驗收入口，會以已核准快照重新擬合並比較結果；如有差異會在 reproduction_audit/ 保存完整重現診斷及逐欄位差異，仍判 FAIL，不會變更原始快照；一般使用者由助理代為執行，不需安裝 R。\n"
         "本機執行需要 requirements.txt 中的 Python 依賴；Quarto 缺席時僅宣稱 Markdown 備援。\n"
         "config.json 記錄輸入雜湊、參數與已核准研究決策；decision_log.json 保存實際確認。\n", encoding="utf-8")
     # Cross-file count and consistency checks before proposing delivery.

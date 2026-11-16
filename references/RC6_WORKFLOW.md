@@ -1,12 +1,12 @@
-## Current release decision — 2026-11-15
+## Historical post1 release decision — 2026-11-15 (current post3 status in POST3_R2_RELEASE_READINESS.md)
 
-**ACCEPTED: rc6 Plan B personal Skill, version 1.0.0rc6.post1.** The user explicitly approved request RC6-PLANB-HISTORY-WAIVER-20261115-COMPAT01 with response A. See references/RELEASE_ACCEPTANCE.json (RELEASE_ACCEPTANCE.json within references). This current decision supersedes older disabled/NOT ACCEPTED/pending-history language retained below as historical review records; it does not rewrite historical failures.
+**ACCEPTED: rc6 Plan B personal Skill, version 1.0.0rc6.post1.** The user explicitly approved request RC6-PLANB-HISTORY-WAIVER-20261115-COMPAT01 with response A. See references/RELEASE_ACCEPTANCE.json (RELEASE_ACCEPTANCE.json within references). For post1 only, this decision superseded older disabled/NOT ACCEPTED/pending-history language retained below as historical review records; it does not rewrite historical failures.
 
 Adopt the approved 60-required-function replacement matrix in references/RC6_FUNCTIONAL_COVERAGE_MATRIX.csv. Original 33-case sources, historical applicability/port records and the old Stage3 Gower fixture remain HISTORICAL EVIDENCE LOST, never PASS; stop demanding recovery. No necessary functional test or research Hard Gate is waived. Legacy automated release-checker history prerequisites are superseded only for this documented user-approved manual release decision; do not claim that legacy runner was executed or passed.
 
 Plan B PNG/offline HTML/A-B-C human acceptance remains PASS. Inline chat display retains historical FAIL; native clickable buttons remain unfinished and nonblocking. Independent Plugin host installation remains NOT RUN/NOT VERIFIED, outside the confirmed personal Skill scope. Do not interpret this release acceptance as approval of new research fits, publishing to third parties or deployment of independent services.
 
-## Plan B release scope — 2026-11-15 (current override)
+## Plan B delivery contract — 2026-11-15 (preserved for post3)
 
 Use Plan B: every necessary statistical figure must be an individually openable/downloadable PNG attachment in its own stage BEFORE asking that stage approval. A/B/C text choices are supported; native clickable buttons and inline chat images are optional, nonblocking. Preserve historical inline FAIL and unfinished-button records. Never change them to PASS or remove them.
 

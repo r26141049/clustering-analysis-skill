@@ -1,21 +1,19 @@
 ---
 name: clustering-analysis-python-native-rc6
-description: 原本完整的英文 description 保持不變
----
-
-
-> **v1.0.0rc6.post2 — RC6-GATE-BRIDGE-01 修復候選，NOT ACCEPTED（尚待真人安裝與 B→A 驗收）。**
-> 原 post1 ACCEPTED 及 references/RELEASE_ACCEPTANCE.json 為先前版本歷史紀錄，不代表 post2 已批准。
-> 無平台訊息 ID 的實際新使用者回覆請走 `respond_observed`；本機收據不等於平台認證點擊。詳見 references/RC6_GATE_BRIDGE01_REVIEW.md。
-
----
-name: clustering-analysis-python-native-rc6
 description: Perform exploratory clustering of uploaded data with Python Native, real EDA, one user-selected method (K-means, Hierarchical, DBSCAN or PAM/Gower), explicit Stage 1–5 confirmations, compatible quality and subsampling stability diagnostics, and reproducible Markdown/Python Quarto reports. Use for clustering data and interpreting groups, not theory-only questions. Candidate v1.0; verify runtime and installation separately.
 ---
 
-## Current release decision — 2026-11-15
+> **v1.0.0rc6.post3 R2 — 發布前審查候選；GitHub 尚未發布，正式 Plugin host 安裝／啟用尚未驗證。**
+> post3 的專項工程回歸 51/51 PASS；312 筆正式研究 Stage 4 180/180 SUCCESS、Stage 5 9/9 嚴格重現 PASS。僅限已測案例，詳見 references/POST3_R2_RELEASE_READINESS.md。原 post1 ACCEPTED 與 RELEASE_ACCEPTANCE.json 僅是歷史紀錄，不代表 post3 已獲發布批准。
+> Stage 5 獨立重現驗證失敗時，請讀取 `reproduction_audit/<run-id>/candidate_XX_comparison.json` 與 `_rerun.json`，不要將驗證失敗改判 PASS。
+> 逾時診斷記錄在 `fit_runtime_events.jsonl`（新研究）與 `reproduction_audit/<run-id>/fit_runtime_events.jsonl`（重現）；不改動正式統計 JSON 或原始 8 秒上限。詳見 references/RC6_TIMEOUT01_REVIEW.md。
+> 無平台訊息 ID 的實際新使用者回覆請走 `respond_observed`；本機收據不等於平台認證點擊。詳見 references/RC6_GATE_BRIDGE01_REVIEW.md。
 
-**ACCEPTED: rc6 Plan B personal Skill, version 1.0.0rc6.post1.** The user explicitly approved request RC6-PLANB-HISTORY-WAIVER-20261115-COMPAT01 with response A. See references/RELEASE_ACCEPTANCE.json (RELEASE_ACCEPTANCE.json within references). This current decision supersedes older disabled/NOT ACCEPTED/pending-history language retained below as historical review records; it does not rewrite historical failures.
+
+
+## Historical post1 release decision — 2026-11-15 (not post3 approval)
+
+**ACCEPTED: rc6 Plan B personal Skill, version 1.0.0rc6.post1.** The user explicitly approved request RC6-PLANB-HISTORY-WAIVER-20261115-COMPAT01 with response A. See references/RELEASE_ACCEPTANCE.json (RELEASE_ACCEPTANCE.json within references). For the post1 personal Skill only, that decision superseded older historical review records; it does not approve post3 or rewrite historical failures.
 
 Adopt the approved 60-required-function replacement matrix in references/RC6_FUNCTIONAL_COVERAGE_MATRIX.csv. Original 33-case sources, historical applicability/port records and the old Stage3 Gower fixture remain HISTORICAL EVIDENCE LOST, never PASS; stop demanding recovery. No necessary functional test or research Hard Gate is waived. Legacy automated release-checker history prerequisites are superseded only for this documented user-approved manual release decision; do not claim that legacy runner was executed or passed.
 
@@ -23,13 +21,13 @@ Plan B PNG/offline HTML/A-B-C human acceptance remains PASS. Inline chat display
 
 # Clustering Analysis Skill v1.0.0rc6 — Research Workflow & Visualization Fix candidate
 
-## Plan B release scope — 2026-11-15 (current override)
+## Plan B delivery contract — retained from 2026-11-15 (historical acceptance details below)
 
 Use Plan B: every necessary statistical figure must be an individually openable/downloadable PNG attachment in its own stage BEFORE asking that stage approval. A/B/C text choices are supported; native clickable buttons and inline chat images are optional, nonblocking. Preserve historical inline FAIL and unfinished-button records. Never change them to PASS or remove them.
 
-Historical Iris repair record (not the current Stage 1 run): user confirms Stage 1–5 links appeared in the later repair response and sampled Stage 1 geometry, Stage 4 WCSS and stability opened successfully. These THREE files have human open PASS only. Other attachments remain human NOT VERIFIED. The original run lacked stage-local attachments before approval: timing FAIL remains; late repair is not retrospective compliance. Current final human acceptance: Stage 1–4 timely PNG attachment delivery and stage-level human opening PASS; Stage 5 offline HTML human reading including the K=3 partition PASS (2026-11-15). Final user acceptance also confirms Stage 5 final_partition.png opens with the correct K-means K=3 partition: overall Plan B image-delivery human acceptance PASS. Do not fabricate per-file opening receipts for other files; image delivery is no longer a Plan B release blocker. Overall release remains NOT ACCEPTED pending remaining required evidence; see RELEASE_READINESS_REVIEW.md in references. See references/PLAN_B_ACCEPTANCE.md (or PLAN_B_ACCEPTANCE.md within references). Do not rerun research to obtain that evidence without a new explicit request.
+Historical Iris repair record (not the current Stage 1 run): user confirms Stage 1–5 links appeared in the later repair response and sampled Stage 1 geometry, Stage 4 WCSS and stability opened successfully. These THREE files have human open PASS only. Other attachments remain human NOT VERIFIED. The original run lacked stage-local attachments before approval: timing FAIL remains; late repair is not retrospective compliance. Current final human acceptance: Stage 1–4 timely PNG attachment delivery and stage-level human opening PASS; Stage 5 offline HTML human reading including the K=3 partition PASS (2026-11-15). Final user acceptance also confirms Stage 5 final_partition.png opens with the correct K-means K=3 partition: overall Plan B image-delivery human acceptance PASS. Do not fabricate per-file opening receipts for other files; image delivery is no longer a Plan B release blocker. At that historic review point, overall release was NOT ACCEPTED pending evidence; see references/RELEASE_READINESS_REVIEW.md. For current post3 status see references/POST3_R2_RELEASE_READINESS.md. See references/PLAN_B_ACCEPTANCE.md (or PLAN_B_ACCEPTANCE.md within references). Do not rerun research to obtain that evidence without a new explicit request.
 
-Plan B does not waive Hard Gates, four-method statistical checks, literature/research acceptance or actual plugin-loader installation validation. Package status remains NOT ACCEPTED while required evidence is absent. Source/plugin/delivery ZIP preparation is not release approval; native plugin import NOT RUN is not installability PASS. Keep stage authorization tokens, scope and distinct-turn controls unchanged. Preserve approved scientific results.
+Plan B does not waive Hard Gates, four-method statistical checks, literature/research acceptance or actual plugin-loader installation validation. Formal Plugin host installation and GitHub post3 publication remain NOT VERIFIED / NOT PUBLISHED; they are distinct from the completed scoped research regression. Source/plugin/delivery ZIP preparation is not release approval; native plugin import NOT RUN is not installability PASS. Keep stage authorization tokens, scope and distinct-turn controls unchanged. Preserve approved scientific results.
 
 ## Required PNG attachments and separate inline acceptance (2026-11-15)
 
@@ -43,11 +41,11 @@ Acceptance has three independent columns:
 2. PNG attachment delivery (minimum, mandatory): construction PASS is separate from actual response submission; human open/download remains UNVERIFIED until the user confirms. User-reported absent/unopenable attachments are FAIL. Check every generated figure in each stage, not only a representative figure or final ZIP.
 3. Chat inline display (advanced): this Iris/K-means human test is FAIL. Do not relabel it PASS from decoding, attachment success, image-content construction or submission. Do not repeat already failed inline mechanisms; no inline retry during attachment remediation.
 
-Historical Iris run: PNG generation PASS; stage-local PNG attachment delivery FAIL (Stage 1 confirmed absent, Stage 2–5 individual links likewise omitted in transcript); inline display FAIL per human report. A late repair does not retroactively pass stage-local delivery. New links can be submitted for separate human opening checks. Keep candidate release NOT ACCEPTED; this patch does not establish end-to-end human acceptance.
+Historical Iris run: PNG generation PASS; stage-local PNG attachment delivery FAIL (Stage 1 confirmed absent, Stage 2–5 individual links likewise omitted in transcript); inline display FAIL per human report. A late repair does not retroactively pass stage-local delivery. New links can be submitted for separate human opening checks. The original Iris case retains its historical FAIL; this paragraph does not overturn post3 scoped research verification.
 
 ## rc6 workflow and image-output contract
 
-Read `references/RC6_WORKFLOW.md` before analysis, presentation or testing. Its current rules supersede older rc5 interaction/display notes where they conflict. Use the EDA handoff, one-step method choice, supported image-content output bridge, PNG-first/offline-HTML report and synchronized final status. This independent rc6 candidate remains disabled and NOT ACCEPTED. P0 human client visibility is UNVERIFIED; never infer it from files, decoder success or submitted tool content.
+Read `references/RC6_WORKFLOW.md` before analysis, presentation or testing. Its current rules supersede older rc5 interaction/display notes where they conflict. Use the EDA handoff, one-step method choice, supported image-content output bridge, PNG-first/offline-HTML report and synchronized final status. Earlier rc6 draft installation / inline visibility status remains historical; post3 publication and host installation are still NOT VERIFIED. P0 human client visibility is not established by file generation alone; never infer it from files, decoder success or submitted tool content.
 
 Read `references/METHODOLOGY_AND_IMPLEMENTATION_SPEC.md` and `references/LITERATURE_AUDIT.md` before analysis. Preserve their Stage 1–5 workflow. Read `references/ACCEPTANCE_MATRIX.csv` when validating this candidate. Treat the packaged `evidence/` as engineering evidence, never as proof of installation or every statistical rule.
 
@@ -57,7 +55,7 @@ Use the existing local Python implementation and Stage 1–5/six-gate workflow w
 
 ## RC5 Four-Method requirements
 
-Read `references/RC5_CHANGES.md`. Keep this independent rc6 candidate disabled and NOT ACCEPTED pending formal installation and rc6 human acceptance. All prior live history is historical only.
+Read `references/RC5_CHANGES.md` for historical method requirements. The post3 R2 candidate has scoped research acceptance but formal Plugin host installation is still NOT VERIFIED. All prior live history is historical only.
 
 Resolve the current pending item/token before parsing a complete original reply. Record recognized downstream nonauthorization clauses in scope_constraints; they never authorize candidates. Unknown or contradictory scope stays CLARIFY. Never shorten a reply to bypass parsing. Revision increments the gate revision and invalidates affected downstream evidence; show the updated plan and wait for a fresh reply.
 
@@ -132,7 +130,7 @@ Use neutral Cluster names; keep DBSCAN Noise separate. Report raw-unit valid n s
 
 Read actual `render_status.json`: claim Quarto rendered only after real CLI success. Otherwise deliver the honest readable Markdown fallback; Python chunk success is insufficient. Cross-check files, figures, counts and config. Execute `reproduce.py --verify` within the disclosed verification budget when dependencies allow and disclose its actual result. It emits real timestamped stdout events and `reproduction_events.jsonl`, including failures; retain capture logs. No log means no recovered transcript: label it honestly. If a successful actual Quarto render already executed verification and produced a current PASS, reuse that evidence instead of repeating the full run. After generating logs or correcting report-only text, call `refresh_delivery` to bind new file hashes and invalidate the earlier delivery token; never edit session JSON. A refreshed report requires new delivery confirmation. Model data, CSV, config and candidate/diagnostic changes are forbidden in delivery-only refresh. Obtain final user review via `confirm_delivery` with a structured decision; only then mark the *analysis* complete. A QA receipt says QA_FIXTURE_CONFIRMED; a declared user response says USER_CONFIRMATION_RECORDED. Neither proves successful installation or audited real-user interaction by itself.
 
-For engineering acceptance, run `scripts/run_validation.py` and separately `scripts/release_check.py --summary evidence/validation_summary.json`. Exit 0 is reserved for ACCEPTED, 1 blocks on actual case/static/loader errors, 2 means INCOMPLETE, 3 means runner/infrastructure error. Keep PASS, FAIL, ERROR, SKIP and NOT RUN separate. A completed runner, green focused unit tests or fixture COMPLETE must never be presented as formal release acceptance. Preserve unconditional research/installation placeholders and original 33 baselines; do not waive them or relabel them PASS.
+Historical rc6 release runners `scripts/run_validation.py` and `scripts/release_check.py` are **not included in this post3 package**; do not claim they were run. Use the packaged `scripts/test_*.py` regression tests and the separate actual 312-record acceptance evidence. Exit 0 is reserved for ACCEPTED, 1 blocks on actual case/static/loader errors, 2 means INCOMPLETE, 3 means runner/infrastructure error. Keep PASS, FAIL, ERROR, SKIP and NOT RUN separate. A completed runner, green focused unit tests or fixture COMPLETE must never be presented as formal release acceptance. Preserve unconditional research/installation placeholders and original 33 baselines; do not waive them or relabel them PASS.
 
 ## Revision and unvalidated research
 
@@ -140,9 +138,9 @@ Call `revise(stage, reason)` for earlier changes; it revokes affected and later 
 
 Keep Hopkins, VAT, Gap and complete Hennig bootstrap disabled and explicitly NOT VALIDATED. Do not fabricate their statistical rules. Do not claim the original 14 PDFs were re-read if only the packaged audit is available. Do not publish to GitHub without a separate user decision following formal acceptance.
 
-## Candidate status
+## Historical rc6 draft candidate status (not the post3 decision)
 
-This rc6 package is NOT ACCEPTED for release. Preserve the rc4 archive and historical test applicability mapping. Keep retained solvers unchanged; engine edits remove the retired branch only. Historical Wine real-user context is not rc5 human acceptance. Automated qa_fixture replays never count as human confirmation. Do not publish GitHub or activate this disabled development candidate without the user’s decision.
+At the earlier rc6 draft review, this package was NOT ACCEPTED for release. Preserve the rc4 archive and historical test applicability mapping. Keep retained solvers unchanged; engine edits remove the retired branch only. Historical Wine real-user context is not rc5 human acceptance. Automated qa_fixture replays never count as human confirmation. Do not publish GitHub or activate this disabled development candidate without the user’s decision.
 
 For the current Plan B acceptance and release review, read `references/PLAN_B_ACCEPTANCE.md` and `references/RELEASE_READINESS_REVIEW.md`; preserve historical failures separately from current scoped human PASS.
 
@@ -150,9 +148,9 @@ For the latest review based on the actual uploaded Source/Plugin/Delivery archiv
 
 ## RC6-COMPAT-01 candidate revision
 
-Current candidate version is 1.0.0rc6.post1. Read references/RC6_COMPAT01_REVIEW.md for the two supported method payload schemas and validated compatibility repair. The normal menu and all Hard Gates remain unchanged. Historical missing baselines are HISTORICAL EVIDENCE LOST under the user-authorized replacement proposal, never PASS. Release remains NOT ACCEPTED until explicit approval of references/HISTORICAL_WAIVER_FOR_APPROVAL.md; permission to repair is not waiver approval. Independent Plugin installation remains unverified and is outside the confirmed personal Skill release scope.
+This historical compatibility revision was v1.0.0rc6.post1; the current package version is v1.0.0rc6.post3. Read references/RC6_COMPAT01_REVIEW.md for the two supported method payload schemas and validated compatibility repair. The normal menu and all Hard Gates remain unchanged. Historical missing baselines are HISTORICAL EVIDENCE LOST under the user-authorized replacement proposal, never PASS. Release remains NOT ACCEPTED until explicit approval of references/HISTORICAL_WAIVER_FOR_APPROVAL.md; permission to repair is not waiver approval. Independent Plugin installation remains unverified and is outside the confirmed personal Skill release scope.
 
 
 ## RC6-GATE-BRIDGE-01 candidate addendum (v1.0.0rc6.post2)
 
-This is an independently packaged **UNACCEPTED** integration repair candidate; the original v1.0.0rc6.post1 Personal Skill release and its evidence are retained without modification. The new operator-observed receipt bridge and B-question -> fresh A regression must be manually tested in a clean installation before any acceptance claim. Older release acceptance records under references are historical to post1, **not** approval for post2. The fallback is not platform identity authentication. No statistical algorithm, Gate invariant, token policy, Stage1–5 transition, PNG specification or research result has been changed.
+At the time, post2 was an independently packaged **UNACCEPTED** integration repair candidate; the original v1.0.0rc6.post1 Personal Skill release and its evidence are retained without modification. The new operator-observed receipt bridge and B-question -> fresh A regression must be manually tested in a clean installation before any acceptance claim. Older release acceptance records under references are historical to post1, **not** approval for post2. The fallback is not platform identity authentication. No statistical algorithm, Gate invariant, token policy, Stage1–5 transition, PNG specification or research result has been changed.

@@ -6,6 +6,14 @@
 **開發語言：** Python  
 **研究領域：** Unsupervised Learning、Cluster Analysis、Applied Statistics
 
+### 開發中版本：v1.0.0rc6.post3
+
+post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問題（RC6-TIMEOUT-01）。
+
+工程測試 **51/51 PASS**；312 筆研究測試 **180/180 成功、0 逾時**，Stage 5 嚴格重現驗證 **9/9 PASS**。
+
+目前正在進行 GitHub 發布審查，正式 Plugin 安裝驗收尚未完成。發布前請繼續使用下方 post2 下載連結。
+
 ---
 
 

@@ -12,6 +12,11 @@ import subprocess
 import sys
 import tempfile
 import warnings
+import queue
+import threading
+import time
+from datetime import datetime, timezone
+import uuid
 import numpy as np
 import pandas as pd
 from .core import METHODS, budget_check, clean, write_json, WorkspaceTemp
@@ -169,6 +174,172 @@ def bounded_fit(df, schema, weights, method, config, budget):
         return result
 
 
+
+class StabilityFitBatch:
+    """One supervised child for a candidate's entire approved subsampling batch.
+
+    Calls still have the exact per-fit wall-clock cap. The first call includes
+    child startup; later calls reuse loaded libraries. A timed-out process is
+    killed and never reused; the next *scheduled* repeat may start a new child,
+    but the failed repeat is never retried or substituted.
+
+    Timing telemetry is saved separately from the scientific stability object
+    to avoid introducing nondeterministic wall times into SHA-256 verification.
+    """
+    def __init__(self, budget, audit_path=None, candidate_index=None):
+        self.budget = budget
+        self.audit_path = Path(audit_path) if audit_path is not None else None
+        self.candidate_index = candidate_index
+        self.proc = None
+        self.stdout_queue = None
+        self.reader = None
+        self.workspace = None
+        self.temp = None
+        self.stderr_handle = None
+        self.launch_count = 0
+
+    def __enter__(self):
+        self.temp = WorkspaceTemp(prefix="clustering-stability-batch-")
+        self.workspace = Path(self.temp.__enter__())
+        return self
+
+    def _log(self, **payload):
+        if self.audit_path is None:
+            return
+        self.audit_path.parent.mkdir(parents=True, exist_ok=True)
+        event = {"event": "stability_fit_runtime", "recorded_utc": datetime.now(timezone.utc).isoformat(),
+                 "candidate_index": self.candidate_index, "per_fit_cap_seconds": self.budget["seconds_per_fit"],
+                 **payload}
+        with self.audit_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(event, ensure_ascii=False, allow_nan=False) + "\n")
+
+    def _reader(self, process, output_queue):
+        try:
+            for line in process.stdout:
+                output_queue.put(line)
+        finally:
+            output_queue.put(None)
+
+    def _spawn(self):
+        root = str(Path(__file__).resolve().parent.parent)
+        env = os.environ.copy()
+        env["PYTHONPATH"] = root + os.pathsep + env.get("PYTHONPATH", "")
+        env["OMP_NUM_THREADS"] = "1"
+        stderr_path = self.workspace / f"worker_{self.launch_count}.stderr.log"
+        self.stderr_handle = stderr_path.open("w", encoding="utf-8")
+        self.proc = subprocess.Popen([sys.executable, "-m", "clustering_native.batch_worker"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.stderr_handle,
+            text=True, encoding="utf-8", env=env, bufsize=1)
+        self.stdout_queue = queue.Queue()
+        self.reader = threading.Thread(target=self._reader,
+                                       args=(self.proc, self.stdout_queue), daemon=True)
+        self.reader.start()
+        self.launch_count += 1
+
+    def _stop(self):
+        p = self.proc
+        if p is not None:
+            try:
+                if p.poll() is None:
+                    p.kill()
+                p.wait(timeout=2)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            for pipe in (p.stdin, p.stdout):
+                if pipe:
+                    try: pipe.close()
+                    except OSError: pass
+        if self.reader is not None:
+            self.reader.join(timeout=2)
+        if self.stderr_handle is not None:
+            self.stderr_handle.close()
+        self.proc = None
+        self.reader = None
+        self.stderr_handle = None
+        self.stdout_queue = None
+
+    def fit(self, df, schema, weights, method, config, *, repeat=None):
+        budget_check(len(df), self.budget, pam=method == "pam")
+        validate_config(method, config, len(df))
+        started = time.monotonic()
+        job_id = uuid.uuid4().hex
+        request = self.workspace / f"{job_id}.request.json"
+        output = self.workspace / f"{job_id}.result.json"
+        phase = "serialize"
+        worker_startup_seconds = 0.0
+        reused_worker = self.proc is not None and self.proc.poll() is None
+        try:
+            write_json(request, {"data": df.to_dict(orient="list"), "schema": schema,
+                "weights": weights, "method": method, "config": config, "budget": self.budget})
+            if not reused_worker:
+                self._stop()
+                phase = "startup"
+                worker_start = time.monotonic()
+                self._spawn()
+                remaining = float(self.budget["seconds_per_fit"]) - (time.monotonic() - started)
+                if remaining <= 0:
+                    raise queue.Empty()
+                ready_line = self.stdout_queue.get(timeout=remaining)
+                if ready_line is None or json.loads(ready_line).get("status") != "READY":
+                    raise RuntimeError("Fit worker did not complete startup handshake")
+                worker_startup_seconds = time.monotonic() - worker_start
+            phase = "request"
+            command = {"command": "fit", "input": str(request), "output": str(output), "job_id": job_id}
+            self.proc.stdin.write(json.dumps(command, ensure_ascii=False) + "\n")
+            self.proc.stdin.flush()
+            phase = "response"
+            remaining = float(self.budget["seconds_per_fit"]) - (time.monotonic() - started)
+            if remaining <= 0:
+                raise queue.Empty()
+            reply_line = self.stdout_queue.get(timeout=remaining)
+            if reply_line is None:
+                raise RuntimeError("Persistent fit worker ended unexpectedly")
+            reply = json.loads(reply_line)
+            if reply.get("job_id") != job_id:
+                raise RuntimeError("Fit-worker job ID mismatch; refusing stale response")
+            if not reply.get("ok"):
+                raise RuntimeError(reply.get("error", "Unknown fit-worker error"))
+            if not output.is_file():
+                raise RuntimeError("Fit-worker acknowledged without an output file")
+            phase = "read_result"
+            result = json.loads(output.read_text(encoding="utf-8"))
+            if "error" in result:
+                raise RuntimeError(result["error"])
+            elapsed = time.monotonic() - started
+            if elapsed > self.budget["seconds_per_fit"]:
+                raise TimeoutError("Approved fit time exceeded; candidate terminated, no substitution")
+            self._log(repeat=repeat, status="SUCCESS", reused_worker=reused_worker,
+                      elapsed_seconds=elapsed, worker_startup_seconds=worker_startup_seconds,
+                      worker_compute_seconds=reply.get("compute_seconds"),
+                      worker_write_seconds=reply.get("write_seconds"), launch_count=self.launch_count)
+            return result
+        except (queue.Empty, TimeoutError) as exc:
+            elapsed = time.monotonic() - started
+            self._log(repeat=repeat, status="TIMEOUT", reused_worker=reused_worker,
+                      elapsed_seconds=elapsed, phase_at_timeout=phase,
+                      worker_startup_seconds=worker_startup_seconds,
+                      launch_count=self.launch_count)
+            self._stop()
+            raise TimeoutError("Approved fit time exceeded; candidate terminated, no substitution") from exc
+        except Exception as exc:
+            self._log(repeat=repeat, status="ERROR", reused_worker=reused_worker,
+                      elapsed_seconds=time.monotonic()-started, failure_type=type(exc).__name__,
+                      phase_at_failure=phase, launch_count=self.launch_count)
+            self._stop()
+            raise
+        finally:
+            for path in (request, output):
+                try: path.unlink(missing_ok=True)
+                except OSError: pass
+
+    def __exit__(self, *args):
+        try:
+            self._stop()
+        finally:
+            if self.temp is not None:
+                self.temp.__exit__(*args)
+
+
 def density_diagnostic(df, schema, weights, metric, min_samples, budget):
     if type(min_samples) is not int or not 2 <= min_samples <= len(df):
         raise ValueError("kNN diagnostic min_samples must be in [2,n]")
@@ -182,7 +353,8 @@ def density_diagnostic(df, schema, weights, metric, min_samples, budget):
                   "interpretation": "Descriptive parameter evidence only; no universal eps or natural-cluster threshold"})
 
 
-def stability(raw, model, plan, method, result, budget, fraction, repeats, seed, policy):
+def stability(raw, model, plan, method, result, budget, fraction, repeats, seed, policy, *,
+              audit_path=None, candidate_index=None):
     """Common-ID subsampling; deliberately NOT Hennig bootstrap.
 
     Original clusters absent from a subsample receive null Jaccard, not 0.
@@ -204,19 +376,21 @@ def stability(raw, model, plan, method, result, budget, fraction, repeats, seed,
     labels = np.array(result["labels"])
     rng = np.random.default_rng(seed)
     rows = []
-    for rep in range(repeats):
-        ix = np.sort(rng.choice(n, size, replace=False))
-        data = model.iloc[ix].copy() if policy == "fixed_full_data_preprocessing" else preprocess(raw.iloc[ix], plan)[0]
-        try:
-            fitted = bounded_fit(data, schema, plan["weights"], method, copy.deepcopy(result["config"]), budget)
-            new = fitted["labels"]
-            ari = aligned_ari(ix.tolist(), labels[ix].tolist(), ix.tolist(), new)
-            jac = nonnoise_jaccard(ix, labels[ix], new, set(labels)-{-1})
-            rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": ari,
-                         "cluster_jaccard": jac, "warnings": fitted["warnings"], "error": None})
-        except (ValueError, RuntimeError, TimeoutError, MemoryError) as exc:
-            rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": None,
-                         "cluster_jaccard": None, "error": f"{type(exc).__name__}: {exc}"})
+    with StabilityFitBatch(budget, audit_path=audit_path, candidate_index=candidate_index) as batch:
+        for rep in range(repeats):
+            ix = np.sort(rng.choice(n, size, replace=False))
+            data = model.iloc[ix].copy() if policy == "fixed_full_data_preprocessing" else preprocess(raw.iloc[ix], plan)[0]
+            try:
+                fitted = batch.fit(data, schema, plan["weights"], method,
+                                   copy.deepcopy(result["config"]), repeat=rep)
+                new = fitted["labels"]
+                ari = aligned_ari(ix.tolist(), labels[ix].tolist(), ix.tolist(), new)
+                jac = nonnoise_jaccard(ix, labels[ix], new, set(labels)-{-1})
+                rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": ari,
+                             "cluster_jaccard": jac, "warnings": fitted["warnings"], "error": None})
+            except (ValueError, RuntimeError, TimeoutError, MemoryError) as exc:
+                rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": None,
+                             "cluster_jaccard": None, "error": f"{type(exc).__name__}: {exc}"})
     return clean({"name": "common-ID subsampling ARI and max-Jaccard (NOT Hennig bootstrap)",
         "fraction": fraction, "repeats": repeats, "seed": seed, "preprocessing_policy": policy,
         "gower_range_policy": "Re-estimated on each subsample, including fixed transformed feature data",
