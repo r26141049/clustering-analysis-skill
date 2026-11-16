@@ -19,7 +19,7 @@ post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問�
 
 ## 下載與安裝
 
-**目前版本：v1.0.0rc6.post2**
+**目前版本：v1.0.0rc6.post3**
 
 [⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3/Clustering_rc6_post3_GithubMain_Plugin_Release.zip)
 
