@@ -389,4 +389,4 @@ Skill 會根據資料內容提出分析建議。
 **專案名稱：** Clustering Analysis Skill  
 **主題：** Unsupervised Learning / Clustering Analysis  
 **開發語言：** Python  
-**版本：** v1.0.0rc6.post1
+**版本：** v1.0.0rc6.post2
