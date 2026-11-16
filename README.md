@@ -12,7 +12,9 @@ post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問�
 
 工程測試 **51/51 PASS**；312 筆研究測試 **180/180 成功、0 逾時**，Stage 5 嚴格重現驗證 **9/9 PASS**。
 
-目前正在進行 GitHub 發布審查，正式 Plugin 安裝驗收尚未完成。發布前請繼續使用下方 post2 下載連結。
+目前已完成 v1.0.0rc6.post3 的 GitHub Release 發布及正式 ZIP 下載驗證。
+
+本版本仍為 Pre-release，正式 Plugin Host 安裝驗收尚未完成。使用者可透過下方連結下載 post3 測試版本，歷史 post2 版本則保留於 GitHub Releases。
 
 ---
 
