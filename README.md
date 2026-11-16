@@ -2,7 +2,7 @@
 
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
-**版本：** `v1.0.0rc6.post2`  
+**版本：** `v1.0.0rc6.post3`  
 **開發語言：** Python  
 **研究領域：** Unsupervised Learning、Cluster Analysis、Applied Statistics
 
@@ -21,7 +21,7 @@ post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問�
 
 **目前版本：v1.0.0rc6.post2**
 
-[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post2/Clustering_rc6_post2_GateBridge_Plugin_Release.zip)
+[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3/Clustering_rc6_post3_GithubMain_Plugin_Release.zip)
 
 本專案提供可供下載的 Skill 套件，請依使用的 AI Agent 執行環境所支援的方式進行安裝或匯入。
 
