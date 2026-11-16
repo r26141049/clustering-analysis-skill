@@ -405,7 +405,8 @@ class Session:
         result = []
         for fitted in self.state["results"]:
             result.append(stability(self.raw(), self.model(), self.plan(), self.method(), fitted,
-                payload["budget"], fraction, repeats, seed, policy))
+                payload["budget"], fraction, repeats, seed, policy,
+                audit_path=self.directory/"fit_runtime_events.jsonl", candidate_index=len(result)))
         diagnostics = {"stability": result, "selection": "No automatic winner or weighted composite; user decision required",
             "boundary_warning": "If a preferred candidate is at either search boundary, consider returning to Stage 3; never auto-expand",
             "wcss_caution": "WCSS reduction alone is insufficient for selecting K",
