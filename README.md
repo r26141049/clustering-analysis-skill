@@ -2,19 +2,38 @@
 
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
-**版本：** `v1.0.0rc6.post3`  
+**目前開發候選：** `v1.0.0rc6.post4.dev16`（R4H.4.1，尚未正式發布）  
+**已發布測試版：** `v1.0.0rc6.post3`（GitHub Pre-release）  
 **開發語言：** Python  
 **研究領域：** Unsupervised Learning、Cluster Analysis、Applied Statistics
 
-### 開發中版本：v1.0.0rc6.post3
+### 版本與發布狀態
+
+#### post4 開發候選：v1.0.0rc6.post4.dev16
+
+目前 `main` 分支已整合 R4H.4.1 dev16（post4）的開發程式碼，並完成 README Stage 4 統計評估說明及五階段研究流程圖的文件更新。
+
+`SKILL.md` 與 `pyproject.toml` 均使用 `v1.0.0rc6.post4.dev16` 對應的開發版本標記。
+
+**重要：post4.dev16 仍為開發候選，必要需求尚未全部完成，不可視為正式發布。**
+
+post4.dev16 預計以 GitHub Pre-release 形式提供下載，包含對應版本的 Plugin ZIP。正式發布前將進行套件封裝與驗證；目前尚未建立新版 Tag、Release 或下載連結。本版本仍為開發候選，尚未通過全部必要功能驗收。
+
+#### post3 已發布測試版：v1.0.0rc6.post3
 
 post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問題（RC6-TIMEOUT-01）。
 
-工程測試 **51/51 PASS**；312 筆研究測試 **180/180 成功、0 逾時**，Stage 5 嚴格重現驗證 **9/9 PASS**。
+post3 歷史驗收結果：
 
-目前已完成 v1.0.0rc6.post3 的 GitHub Release 發布及正式 ZIP 下載驗證。
+- 工程測試：**51/51 PASS**
+- 312 筆研究測試：**180/180 成功、0 逾時**
+- Stage 5 嚴格重現驗證：**9/9 PASS**
 
-本版本仍為 Pre-release，正式 Plugin Host 安裝驗收尚未完成。使用者可透過下方連結下載 post3 測試版本，歷史 post2 版本則保留於 GitHub Releases。
+post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
+
+此版本仍標記為 Pre-release，正式 Plugin Host 安裝驗收尚未完成。使用者目前可透過下方下載連結取得 post3 測試版本，歷史 post2 版本則保留於 GitHub Releases。
+
+**上述測試數據屬於 post3 的歷史驗收紀錄，不代表 post4.dev16 已通過相同驗收。**
 
 ---
 
