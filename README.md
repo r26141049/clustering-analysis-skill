@@ -40,7 +40,7 @@ post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
 ---
 
 
-## 下載與安裝
+## 下載
 
 ### 目前開發候選：v1.0.0rc6.post4.dev16
 
@@ -52,11 +52,11 @@ post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
 
 此版本包含四種分群方法、五階段研究流程、Hard Gate 決策控制、模型品質與穩定性評估，以及可重現研究報告功能。
 
-<!--**重要：post4.dev16 仍為開發候選版本，尚未完成全部必要功能驗收，不應視為正式穩定版本。**-->
+<!--**重要：post4.dev16 仍為開發候選版本，尚未完成全部必要功能驗收，不應視為正式穩定版本。**
 
 目前已完成初步封裝檢查、GitHub Pre-release 發布及 ZIP 下載驗證。
 
-<!--
+
 ### 歷史測試版本：v1.0.0rc6.post3
 
 [⬇️ 查看及下載 post3 測試版](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3)
