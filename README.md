@@ -116,7 +116,7 @@ Skill 會依照方法及資料型態考慮適當的距離計算方式。
 例如：
 
 - 歐氏距離（Euclidean Distance）
-- 曼哈頓距離（Manhattan Distance）
+<!-- - 曼哈頓距離（Manhattan Distance）-->
 - Gower Distance：適用於混合型變數資料
 
 不同方法具有不同的統計假設與適用限制，因此 Skill 不會僅依資料筆數或變數型態決定推薦方法。
