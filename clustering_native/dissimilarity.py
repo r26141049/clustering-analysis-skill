@@ -216,7 +216,7 @@ def aligned_ari(ids_a, labels_a, ids_b, labels_b):
     if not (len(ids_a)==len(labels_a) and len(ids_b)==len(labels_b)):
         raise ValueError("IDs and labels length mismatch")
     if len(set(ids_a))!=len(ids_a) or len(set(ids_b))!=len(ids_b):
-        raise ValueError("Duplicate observation IDs; resolve bootstrap duplicates first")
+        raise ValueError("Duplicate observation IDs; resolve repeated sampling IDs first")
     if set(ids_a)!=set(ids_b):
         raise ValueError("ARI partitions are not on identical observation sets")
     lookup=dict(zip(ids_b,labels_b))
@@ -235,33 +235,6 @@ def aligned_ari(ids_a, labels_a, ids_b, labels_b):
     expected = sum_a*sum_b/total
     maximum = (sum_a+sum_b)/2
     return float((index-expected)/(maximum-expected)) if maximum != expected else 1.
-
-
-def matched_cluster_jaccard(ids_original, original_labels, ids_new, new_labels):
-    """Best-match Jaccard using only observed IDs common to both partitions.
-
-    This is for a UNIQUE-ID subsampling protocol. It is NOT itself a full
-    implementation of Hennig (2007) bootstrap sampling with replacement.
-    """
-    if len(set(ids_original))!=len(ids_original) or len(set(ids_new))!=len(ids_new):
-        raise ValueError("Jaccard requires unique IDs in this subsample protocol")
-    if len(ids_original)!=len(original_labels) or len(ids_new)!=len(new_labels):
-        raise ValueError("IDs / labels mismatch")
-    common=set(ids_original)&set(ids_new)
-    if not common: return {}
-    original={i:l for i,l in zip(ids_original,original_labels)}
-    other={i:l for i,l in zip(ids_new,new_labels)}
-    original_groups=set(original[i] for i in common)
-    new_groups=set(other[i] for i in common)
-    results={}
-    for g in original_groups:
-        A={i for i in common if original[i]==g}
-        candidates=[]
-        for h in new_groups:
-            B={i for i in common if other[i]==h}
-            candidates.append(len(A&B)/len(A|B))
-        results[g]=max(candidates)
-    return results
 
 
 def ward_distance_guard(linkage: str, metric: str):

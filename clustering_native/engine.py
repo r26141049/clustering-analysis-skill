@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 from .core import METHODS, budget_check, clean, write_json, WorkspaceTemp
 from .dissimilarity import (gower_dissimilarity, validate_dissimilarity,
-    pam_build_swap, ward_distance_guard, aligned_ari, matched_cluster_jaccard)
+    pam_build_swap, ward_distance_guard, aligned_ari)
 from .dissimilarity import silhouette_for_dissimilarity
 
 
@@ -130,14 +130,10 @@ def fit_one(df, schema, weights, method, config, budget):
     labels = np.asarray(labels, dtype=int)
     use = labels != -1 if method == "dbscan" else np.ones(len(labels), dtype=bool)
     groups = len(set(labels[use]))
-    metrics = {"clusters": groups, "silhouette": None, "calinski_harabasz": None,
-               "davies_bouldin": None, "silhouette_policy": "noise excluded" if method == "dbscan" else "all observations"}
+    metrics = {"clusters": groups, "silhouette": None,
+               "silhouette_policy": "noise excluded" if method == "dbscan" else "all observations"}
     if 2 <= groups < int(use.sum()):
         metrics["silhouette"] = silhouette_for_dissimilarity(D[np.ix_(use, use)], labels[use])
-        if config["metric"] == "euclidean" and method in {"kmeans", "hierarchical"}:
-            from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score
-            metrics["calinski_harabasz"] = float(calinski_harabasz_score(X[use], labels[use]))
-            metrics["davies_bouldin"] = float(davies_bouldin_score(X[use], labels[use]))
     else:
         metrics["silhouette_reason"] = "Undefined: fewer than two clusters or all singleton observations"
     if method == "kmeans":
@@ -355,11 +351,10 @@ def density_diagnostic(df, schema, weights, metric, min_samples, budget):
 
 def stability(raw, model, plan, method, result, budget, fraction, repeats, seed, policy, *,
               audit_path=None, candidate_index=None):
-    """Common-ID subsampling; deliberately NOT Hennig bootstrap.
+    """Subsample observations and evaluate conditional partition stability by ARI.
 
-    Original clusters absent from a subsample receive null Jaccard, not 0.
-    Noise is retained as a label in ARI. Jaccard uses all sampled IDs, excludes
-    noise as a candidate cluster, and counts newly-noise points as lost members.
+    ARI compares labels only on the common sampled observation identifiers;
+    DBSCAN noise remains a label. A failed resample is tracked separately.
     """
     from .data import preprocess
     if not 0 < fraction < 1 or type(repeats) is not int or repeats < 2:
@@ -385,28 +380,15 @@ def stability(raw, model, plan, method, result, budget, fraction, repeats, seed,
                                    copy.deepcopy(result["config"]), repeat=rep)
                 new = fitted["labels"]
                 ari = aligned_ari(ix.tolist(), labels[ix].tolist(), ix.tolist(), new)
-                jac = nonnoise_jaccard(ix, labels[ix], new, set(labels)-{-1})
                 rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": ari,
-                             "cluster_jaccard": jac, "warnings": fitted["warnings"], "error": None})
+                             "warnings": fitted["warnings"], "error": None})
             except (ValueError, RuntimeError, TimeoutError, MemoryError) as exc:
                 rows.append({"repeat": rep, "row_positions": ix.tolist(), "ari": None,
-                             "cluster_jaccard": None, "error": f"{type(exc).__name__}: {exc}"})
-    return clean({"name": "common-ID subsampling ARI and max-Jaccard (NOT Hennig bootstrap)",
+                             "error": f"{type(exc).__name__}: {exc}"})
+    return clean({"name": "common-ID subsampling ARI",
         "fraction": fraction, "repeats": repeats, "seed": seed, "preprocessing_policy": policy,
         "gower_range_policy": "Re-estimated on each subsample, including fixed transformed feature data",
-        "noise_policy": "ARI retains noise; Jaccard uses all sampled IDs, excludes noise as candidate cluster, and penalizes newly-noise membership loss",
+        "noise_policy": "ARI retains noise as a label; all stability comparisons align common sampled IDs",
         "disappeared_cluster_policy": "null if original group absent on eligible common IDs",
         "pass_threshold": None, "runs": rows, "failures": sum(r["error"] is not None for r in rows)})
 
-
-def nonnoise_jaccard(ids, original, new, original_groups):
-    """Best nonnoise match on identical sampled IDs; missing original group=null."""
-    ids, original, new = np.asarray(ids), np.asarray(original), np.asarray(new)
-    if not (len(ids) == len(original) == len(new)) or len(set(ids)) != len(ids):
-        raise ValueError("Unique identical IDs and equal label lengths required")
-    other = [set(ids[new == h]) for h in set(new)-{-1}]
-    scores = {}
-    for g in original_groups:
-        A = set(ids[original == g])
-        scores[str(g)] = max((len(A & B)/len(A | B) for B in other), default=0.) if A else None
-    return scores

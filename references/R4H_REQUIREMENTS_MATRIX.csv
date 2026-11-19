@@ -1,0 +1,10 @@
+ID,stage,priority,implementation_status,local_evidence,live_acceptance
+P4-S1-FEATURE-ROLE-GATE-01,Stage1,P1,IMPLEMENTED,5 new tests and E2E PASS,NOT RUN
+P4-S1-EDA-VARIABLE-LABEL-01,Stage1,P1,IMPLEMENTED,SVG and geometry test PASS,NOT RUN
+P4-S2-GOWER-SYMBOL-01,Stage2,P2,IMPLEMENTED,K-medoids report E2E PASS,NOT RUN
+P4-S2-METHOD-REASON-01,Stage2,P2,IMPLEMENTED,7 Stage2 regression tests PASS,NOT RUN
+P4-S3-EDA-ADAPTIVE-K-01,Stage3,P1,IMPLEMENTED,three blobs vs unimodal and draft test PASS,NOT RUN
+P4-S4-MEDOID-VIS-01,Stage4,P1,IMPLEMENTED,K-medoids E2E no medoids.svg PASS,NOT RUN
+P4-S5-NUMERIC-DIFFERENCE-01,Stage5,P1,IMPLEMENTED,Posthoc unit and report E2E PASS,NOT RUN
+P4-S5-METHOD-TEXT-01,Stage5,P1,IMPLEMENTED,K-medoids report no DBSCAN density language PASS,NOT RUN
+P4-ALL-KMEDOIDS-NAMING-01,All,P2,IMPLEMENTED,public name test and old pam reproduction PASS,NOT RUN

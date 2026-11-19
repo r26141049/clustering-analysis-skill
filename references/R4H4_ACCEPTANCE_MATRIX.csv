@@ -1,0 +1,18 @@
+﻿id,item,status,evidence
+R4H4-EDA-IRIS,"Iris 150 x 4 observed petal gaps -> K2,K3",PASS,actual Iris dataset read from sklearn Iris; EDA only
+R4H4-EDA-3GROUP,"Three strong observed regions -> K2,K3,K4",PASS,controlled QA fixture only; no research imagery
+R4H4-EDA-INCONCLUSIVE,No separated regions -> broad K range,PASS,controlled QA uniform fixture
+R4H4-STAGE4-AUTO,"New CLI Stage3 approval -> real fit, real ARI -> final review",PASS,real resampling; no result approval or fixed ARI fixture
+R4H4-STAGE4-HARDGATE,"Unauthorized fits, repeat use, and result tampering denied",PASS,new integration + tamper tests
+R4H4-STAGE4-EXTENSION,Authorized expansion reuses old fits and stability,PASS,real bounded_fit and real stability; one new batch
+R4H4-LEGACY-RESULTGATE,Previously persisted Stage4 results gate remains intact,PASS,Gate constructor and R4H3 legacy workflows
+R4H3-LEGACY-REGRESSIONS,Legacy Stage3/Stage4 test methods,PASS,4/4 tests
+R4H1-ATTACHMENTS,Stage PNG plain links and no embedded preview,PASS,4/4 tests
+R4H2-PREPROCESS,Fitted preprocessing disclosure,PASS,7/7 tests
+R4G-SESSION-SHORT,R4G session initial checks,PASS,2/2 executed before timeout
+R4G-SESSION-RECOVERY-LONG,R4G PAM/Gower long persistence regression,TIMEOUT,aggregate run exceeded execution limit
+R4H4-COMBINATION-LONG,Combined R4H4 6-test run,TIMEOUT,individual initial 5/5 and incremental extension 1/1 passed separately
+R4H4-CROSSMETHOD-NEW-E2E,Five new-workflow full-method E2E with strict verification,NOT RUN,prior R4H3 5/5 does not automatically certify modified R4H4
+HOST-UI,Actual ChatGPT PNG opening and layout,NOT RUN,must be verified by user
+GITHUB-README-UPDATE-01,GitHub README,DEFERRED,per explicit user request; preserved byte-identical
+GITHUB-FLOWCHART-UPDATE-01,GitHub workflow diagram,DEFERRED,per explicit user request; preserved byte-identical

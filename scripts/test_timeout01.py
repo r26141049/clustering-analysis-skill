@@ -75,7 +75,7 @@ class TimeoutRegression(unittest.TestCase):
         self.assertEqual(set(x),{'name','fraction','repeats','seed','preprocessing_policy',
             'gower_range_policy','noise_policy','disappeared_cluster_policy','pass_threshold','runs','failures'})
         self.assertEqual(x['failures'],0)
-        self.assertEqual(set(x['runs'][0]),{'repeat','row_positions','ari','cluster_jaccard','warnings','error'})
+        self.assertEqual(set(x['runs'][0]),{'repeat','row_positions','ari','warnings','error'})
     def test_all_four_methods_preserve_oneshot_outputs(self):
         configs = {
             'kmeans': {'metric':'euclidean','k':2,'init':'k-means++','n_init':3,

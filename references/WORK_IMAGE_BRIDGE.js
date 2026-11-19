@@ -1,3 +1,6 @@
+// HISTORICAL ONLY — R4H.1 MUST NOT use this image-content bridge for
+// stage chat delivery. Use stage_attachments with individual PNG text links.
+// Retained strictly for past-implementation audit; do not execute.
 // Execute inside functions.exec, after replacing paths with CURRENT absolute PNG
 // paths from figure_previews. Never run this as a Node CLI or print image data.
 // tools.view_image validates/retrieves the existing local image. image forwards
