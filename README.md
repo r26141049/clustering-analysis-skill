@@ -1,5 +1,3 @@
-# Clustering Analysis Skill
-
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
 **目前開發候選：** `v1.0.0rc6.post4.dev16`（R4H.4.1，尚未正式發布）  
@@ -40,13 +38,33 @@ post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
 
 ## 下載與安裝
 
-**目前版本：v1.0.0rc6.post3**
+### 目前開發候選：v1.0.0rc6.post4.dev16
 
-[⬇️ 下載 Clustering Analysis Skill 安裝套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3/Clustering_rc6_post3_GithubMain_Plugin_Release.zip)
+**R4H.4.1 dev16 — GitHub Pre-release**
 
-本專案提供可供下載的 Skill 套件，請依使用的 AI Agent 執行環境所支援的方式進行安裝或匯入。
+[⬇️ 下載 post4.dev16 Plugin 候選套件（ZIP）](https://github.com/r26141049/clustering-analysis-skill/releases/download/v1.0.0rc6.post4.dev16/Clustering_Post4_R4H41_dev16_Plugin_CANDIDATE.zip)
 
-目前已完成 ChatGPT Personal Skill 的功能驗收；其他 AI Agent 的完整相容性尚未驗證。
+[查看 post4.dev16 發布說明](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post4.dev16)
+
+此版本包含四種分群方法、五階段研究流程、Hard Gate 決策控制、模型品質與穩定性評估，以及可重現研究報告功能。
+
+**重要：post4.dev16 仍為開發候選版本，尚未完成全部必要功能驗收，不應視為正式穩定版本。**
+
+目前已完成初步封裝檢查、GitHub Pre-release 發布及 ZIP 下載驗證，但 Plugin Host 的實際安裝、啟用及完整端到端驗收仍未完成。
+
+### 歷史測試版本：v1.0.0rc6.post3
+
+[⬇️ 查看及下載 post3 測試版](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3)
+
+post3 的歷史工程測試及研究驗收紀錄已保留，但不代表 post4.dev16 已通過相同測試。
+
+### 安裝注意事項
+
+本專案提供 Clustering Analysis Skill 套件，請依使用的 AI Agent 或 Plugin Host 所支援的方式進行安裝或匯入。
+
+GitHub 提供的 Plugin ZIP 與自動產生的 Source code ZIP 不同，請選擇對應版本的 Plugin ZIP 附件。
+
+不同 AI Agent 環境的安裝方式、功能支援程度與相容性可能不同。目前尚未完成 post4.dev16 在各 Plugin Host 的實際安裝驗收。
 
 ---
 
