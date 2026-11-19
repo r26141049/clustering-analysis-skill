@@ -65,7 +65,7 @@ post3 的歷史工程測試及研究驗收紀錄已保留，但不代表 post4.d
 本專案提供 Clustering Analysis Skill 套件，請依使用的 AI Agent 或 Plugin Host 所支援的方式進行安裝或匯入。不同 AI Agent 環境的安裝方式、功能支援程度與相容性可能不同。
 
 使用本 skill 時請輸入以下提示詞：
-**"請根據 skill 中 skill.md 將我提供的資料進行分析與分群。"**
+**"請根據 Clustering Analysis skill 中的 skill.md，將我提供的資料進行分析與分群。"**
 
 ---
 
