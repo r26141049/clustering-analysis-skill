@@ -19,6 +19,7 @@
 
 post4.dev16 預計以 GitHub Pre-release 形式提供下載，包含對應版本的 Plugin ZIP。正式發布前將進行套件封裝與驗證；目前尚未建立新版 Tag、Release 或下載連結。本版本仍為開發候選，尚未通過全部必要功能驗收。
 
+<!--
 #### post3 已發布測試版：v1.0.0rc6.post3
 
 post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問題（RC6-TIMEOUT-01）。
@@ -34,6 +35,7 @@ post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
 此版本仍標記為 Pre-release，正式 Plugin Host 安裝驗收尚未完成。使用者目前可透過下方下載連結取得 post3 測試版本，歷史 post2 版本則保留於 GitHub Releases。
 
 **上述測試數據屬於 post3 的歷史驗收紀錄，不代表 post4.dev16 已通過相同驗收。**
+-->
 
 ---
 
@@ -50,15 +52,17 @@ post3 已完成 GitHub Release 發布及 ZIP 下載驗證。
 
 此版本包含四種分群方法、五階段研究流程、Hard Gate 決策控制、模型品質與穩定性評估，以及可重現研究報告功能。
 
-**重要：post4.dev16 仍為開發候選版本，尚未完成全部必要功能驗收，不應視為正式穩定版本。**
+<!--**重要：post4.dev16 仍為開發候選版本，尚未完成全部必要功能驗收，不應視為正式穩定版本。**-->
 
-目前已完成初步封裝檢查、GitHub Pre-release 發布及 ZIP 下載驗證，但 Plugin Host 的實際安裝、啟用及完整端到端驗收仍未完成。
+目前已完成初步封裝檢查、GitHub Pre-release 發布及 ZIP 下載驗證。
 
+<!--
 ### 歷史測試版本：v1.0.0rc6.post3
 
 [⬇️ 查看及下載 post3 測試版](https://github.com/r26141049/clustering-analysis-skill/releases/tag/v1.0.0rc6.post3)
 
 post3 的歷史工程測試及研究驗收紀錄已保留，但不代表 post4.dev16 已通過相同測試。
+-->
 
 ### 安裝注意事項
 
