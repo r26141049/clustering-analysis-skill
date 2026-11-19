@@ -419,7 +419,6 @@ Skill 會根據資料內容提出分析建議。
 - 可重現研究報告
 - 方法選擇 payload 相容性修復
 
-正式功能不包含 Gaussian Mixture Model（GMM）。
 
 ### 介面限制
 
