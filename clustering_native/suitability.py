@@ -43,6 +43,13 @@ def _recommend(rows, purpose, finite, density, n, p):
     elif purpose == 'density_noise_exploration' and density['computed'] and 'dbscan' in eligible:
         primary = ['dbscan']; secondary = ['pam'] if 'pam' in eligible else []
         rationale = f'n={n}, p={p}；DBSCAN直接對應密度與雜訊探索目的，已有近鄰診斷；診斷未決定eps或證明密度群。'
+    elif purpose == 'exploratory_partition' and not finite and 'pam' in eligible:
+        primary = ['pam']
+        secondary = ['hierarchical'] if 'hierarchical' in eligible else []
+        rationale = (f'n={n}, p={p}；本次不是全有限數值的單一歐氏空間，'
+                     'K-medoids（PAM 演算法）可透過已驗證的 Gower 距離處理數值與類別差異；'
+                     '因此作為優先探索選項，階層式分群可比較距離合併結構。'
+                     '這是適用性優先，不等於已證明有自然群或選定最佳 K。')
     elif purpose == 'exploratory_partition' and finite and 'hierarchical' in eligible:
         primary = [m for m in ('hierarchical','pam','kmeans') if m in eligible]; secondary = []
         rationale = (f'n={n}, p={p}、有限數值幾何可用；一般探索目的沒有足以證成單一首選的證據；並列可行方法，歐氏Ward僅為可規劃選項，'
@@ -75,6 +82,28 @@ def assess(model, plan, eda, purpose='exploratory_partition', handoff=None):
     flags = {c: v['n'] for c, v in eda['outliers'].items()}
     constants = [c for c in model if model[c].nunique(dropna=True) <= 1]
     density = density_eda(model, plan)
+    # Preflight BEFORE the Stage 2 choice gate for mixed/pairwise-missing data.
+    # Bound the full pairwise allocation. Larger matrices remain unverified,
+    # never silently declared valid.
+    gower_preflight = {'status': 'NOT_REQUIRED', 'model_fits': 0}
+    if not numeric or model.isna().any().any():
+        estimated_bytes = 12 * 8 * n * n + 32 * n * p
+        if n > 500 or estimated_bytes > 32 * 1024**2:
+            gower_preflight = {'status': 'NOT_CHECKED_BUDGET', 'model_fits': 0,
+                'reason': 'Stage 2 pairwise preflight exceeds 500 rows / 32 MiB; require bounded diagnostic before method approval'}
+        else:
+            from .dissimilarity import gower_dissimilarity
+            try:
+                D, details = gower_dissimilarity(model,
+                    {c: plan['schema'][c] for c in model}, plan['weights'])
+                n_bad = int(np.count_nonzero(~np.isfinite(D[np.triu_indices(n,1)])))
+                gower_preflight = {'status': 'BLOCKED_UNDEFINED_PAIRS' if n_bad else 'PASS',
+                    'undefined_pairs': n_bad, 'omitted_features': details['omitted_features'],
+                    'model_fits': 0,
+                    'reason': 'No common comparable feature for at least one pair; revise Stage 1 before Gower fitting' if n_bad else 'Every off-diagonal dissimilarity is finite'}
+            except (ValueError, TypeError) as error:
+                gower_preflight = {'status': 'BLOCKED_INVALID_INPUT', 'model_fits': 0,
+                    'reason': f'{type(error).__name__}: {error}'}
     evidence = {'n': n, 'p': p, 'types': types, 'remaining_missing': int(model.isna().sum().sum()),
                 'numeric_ranges': eda['numeric'], 'iqr_flags': eda['outliers'], 'constants': constants,
                 'duplicate_feature_rows': int(model.duplicated().sum()), 'purpose': purpose}
@@ -114,6 +143,13 @@ def assess(model, plan, eda, purpose='exploratory_partition', handoff=None):
         elif method == 'pam':
             risks.append('Metric still requires substantive meaning; range-scaled Gower remains sensitive to extremes')
             follow.append('Actual medoids match representative-observation exploration; bound quadratic distance and SWAP cost')
+        # Gower-based methods cannot fit a matrix containing undefined pairs.
+        # Do not issue an executable method choice for a representation known
+        # to be invalid. The user may revise Stage 1 with a new scoped gate.
+        if method in {'pam', 'hierarchical', 'dbscan'} and gower_preflight['status'].startswith('BLOCKED_'):
+            status = '不適合'
+            risks.append('Stage 2 Gower preflight BLOCKED: ' + gower_preflight['reason'])
+            follow.append('Revise Stage 1 handling and reapprove; never replace undefined distances with zero')
         if not risks:
             risks.append('No additional restriction observed in this EDA; model geometry and initialization still require an explicit plan')
         if not follow:
@@ -122,7 +158,8 @@ def assess(model, plan, eda, purpose='exploratory_partition', handoff=None):
                      'compatibility': 'Exploratory use evaluated for declared purpose and observed data; not natural-group proof',
                      'risks': '; '.join(risks), 'conditional_followup': '; '.join(follow),
                      'recommendation_reason': f'Purpose={purpose}; n={n}, p={p}, missing={evidence["remaining_missing"]}; ' + '; '.join(risks)})
-    result = {'methods': rows, 'density_diagnostic': density, 'structure_status': '資訊不足',
+    result = {'methods': rows, 'density_diagnostic': density, 'gower_preflight': gower_preflight,
+              'structure_status': '資訊不足',
             'natural_groups_proven': False, 'purpose': purpose,
             'recommendation': _recommend(rows, purpose, finite, density, n, p)}
 
@@ -159,7 +196,24 @@ def assess(model, plan, eda, purpose='exploratory_partition', handoff=None):
         result['recommendation'].update(primary=[], secondary=[], single_preferred=False,
             rationale='Geometry plots have not been reviewed; computational feasibility alone cannot establish priority. Inspect exact-data scatter/pair plots or state why geometry is uninformative.')
         result['recommendation']['method_reasons'] = {r['method']:'No geometric priority established; '+r['risks'] for r in rows}
+    # Recommendation priority is NOT the method menu number or feasibility status.
+    # Ties are intentional; no fitted-method ranking is inferred from Stage 1.
+    recommendation = result['recommendation']
     for row in rows:
-        row['recommendation_reason'] = result['recommendation']['method_reasons'][row['method']]
+        row['recommendation_reason'] = recommendation['method_reasons'][row['method']]
+        if row['status'] == '不適合':
+            priority, tier = '目前不適用', None
+        elif row['method'] in recommendation['primary']:
+            priority, tier = '優先建議', 1
+        elif row['method'] in recommendation['secondary']:
+            priority, tier = '次優先考慮', 2
+        elif row['status'] == '資訊不足':
+            priority, tier = '待確認', None
+        else:
+            priority, tier = '其他可評估方案', 3
+        row['recommendation_priority'] = priority
+        row['priority_tier'] = tier
+    result['priority_legend'] = ('同層級可並列；此為擬合前的資料與研究目的適合性建議，'
+                                 '不是選單編號，也不是模型品質排名。最終方法由使用者授權。')
     result['geometry_review_status'] = visual.get('status','UNREVIEWED')
     return result

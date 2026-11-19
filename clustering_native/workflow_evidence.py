@@ -24,7 +24,7 @@ def geometry_figures(df, schema, directory):
         fig, ax = plt.subplots(figsize=(7, 5)); axes = np.array([[ax]])
         ax.scatter(df[shown[0]], df[shown[1]], s=10, alpha=.65)
         ax.set_aspect('equal', adjustable='datalim')
-        ax.set(xlabel='F'+str(list(df).index(shown[0])+1), ylabel='F'+str(list(df).index(shown[1])+1))
+        ax.set(xlabel=str(shown[0]), ylabel=str(shown[1]))
     else:
         fig, axes = plt.subplots(len(shown), len(shown), figsize=(9, 9), squeeze=False)
         for i, y in enumerate(shown):
@@ -32,8 +32,8 @@ def geometry_figures(df, schema, directory):
                 ax = axes[i,j]
                 if i == j: ax.hist(df[x].dropna(), bins='auto', color='#387c94')
                 else: ax.scatter(df[x], df[y], s=6, alpha=.45)
-                if i == len(shown)-1: ax.set_xlabel('F'+str(list(df).index(x)+1))
-                if j == 0: ax.set_ylabel('F'+str(list(df).index(y)+1))
+                if i == len(shown)-1: ax.set_xlabel(str(x))
+                if j == 0: ax.set_ylabel(str(y))
     fig.suptitle('Observed feature geometry (no cluster labels)')
     fig.tight_layout()
     path = out/'eda_geometry.png'; fig.savefig(path.with_suffix('.svg')); fig.savefig(path, dpi=150); plt.close(fig)
