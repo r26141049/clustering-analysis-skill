@@ -1,5 +1,3 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3d25e45f-c011-48df-88c7-d90c775a5b3f" /># Clustering Analysis Skill
-
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
 **目前開發候選：** `v1.0.0rc6.post4.dev16`（R4H.4.1，尚未正式發布）  
