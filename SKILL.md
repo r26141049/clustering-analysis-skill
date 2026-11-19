@@ -1,156 +1,130 @@
 ---
-name: clustering-analysis-python-native-rc6
-description: Perform exploratory clustering of uploaded data with Python Native, real EDA, one user-selected method (K-means, Hierarchical, DBSCAN or PAM/Gower), explicit Stage 1–5 confirmations, compatible quality and subsampling stability diagnostics, and reproducible Markdown/Python Quarto reports. Use for clustering data and interpreting groups, not theory-only questions. Candidate v1.0; verify runtime and installation separately.
+name: clustering-analysis-post4-r4h41-development
+description: R4H.4 actual EDA-anchored neighboring-K candidates and Stage 4 auto-execution of Stage 3 authorized fits and diagnostics; final-selection Hard Gate and legacy sessions retained. Development candidate; host acceptance pending.
 ---
 
-> **v1.0.0rc6.post3 R2 — 發布前審查候選；GitHub 尚未發布，正式 Plugin host 安裝／啟用尚未驗證。**
-> post3 的專項工程回歸 51/51 PASS；312 筆正式研究 Stage 4 180/180 SUCCESS、Stage 5 9/9 嚴格重現 PASS。僅限已測案例，詳見 references/POST3_R2_RELEASE_READINESS.md。原 post1 ACCEPTED 與 RELEASE_ACCEPTANCE.json 僅是歷史紀錄，不代表 post3 已獲發布批准。
-> Stage 5 獨立重現驗證失敗時，請讀取 `reproduction_audit/<run-id>/candidate_XX_comparison.json` 與 `_rerun.json`，不要將驗證失敗改判 PASS。
-> 逾時診斷記錄在 `fit_runtime_events.jsonl`（新研究）與 `reproduction_audit/<run-id>/fit_runtime_events.jsonl`（重現）；不改動正式統計 JSON 或原始 8 秒上限。詳見 references/RC6_TIMEOUT01_REVIEW.md。
-> 無平台訊息 ID 的實際新使用者回覆請走 `respond_observed`；本機收據不等於平台認證點擊。詳見 references/RC6_GATE_BRIDGE01_REVIEW.md。
+# Clustering Analysis Skill v1.0.0rc6.post4.dev16（R4H.4.1 報告文字與授權狀態一致性修復開發版）
 
+**開發候選，必要需求尚未全部完成；不可視為正式發布。**
 
+四方法：K-means、K-medoids/Gower、DBSCAN、Hierarchical。不得加入 GMM。保留五階段及獨立研究 Gate，新研究在 Stage 3 核准候選、全資料擬合及重抽樣診斷預算，Stage 4 自動接續兩批已授權工作，保留最終選群 Hard Gate；舊研究仍維持原授權流程。測試使用明確 qa_fixture；不能當作真人批准。
 
-## Historical post1 release decision — 2026-11-15 (not post3 approval)
+使用本目錄 Python 套件；`python -m clustering_native --request request.json`。公開 CLI 遮罩內部 Token；正常使用者只看 A／B／C，不顯示 Token、期限、nonce 或內部摘要。新且真實觀察到的當前回答使用 respond_current，必須只有一個 pending proposal。禁止重送舊回答、猜測同意或手改 session。
 
-**ACCEPTED: rc6 Plan B personal Skill, version 1.0.0rc6.post1.** The user explicitly approved request RC6-PLANB-HISTORY-WAIVER-20261115-COMPAT01 with response A. See references/RELEASE_ACCEPTANCE.json (RELEASE_ACCEPTANCE.json within references). For the post1 personal Skill only, that decision superseded older historical review records; it does not approve post3 or rewrite historical failures.
+Stage 1 自動 EDA，提供所有 PNG 與前處理差異後等待批准。Stage 1 批准後由公開續行入口立即執行 Stage 2 唯讀評估與方法選單。Stage 2 批准後自動建立 Stage 3 探索提案，不擬合；候選與預算必須批准才執行。取得 Stage 3 執行許可後，Stage 4 自動擬合核准的全資料候選並依同一授權執行 Silhouette／重抽樣 ARI 診斷，等待使用者進行獨立最終選群；舊 Session 保留原結果確認關卡。Stage 5 產報告、等待交付確認；批准後直接呈現 research_report 完整正文與檔案，不增加批准。
 
-Adopt the approved 60-required-function replacement matrix in references/RC6_FUNCTIONAL_COVERAGE_MATRIX.csv. Original 33-case sources, historical applicability/port records and the old Stage3 Gower fixture remain HISTORICAL EVIDENCE LOST, never PASS; stop demanding recovery. No necessary functional test or research Hard Gate is waived. Legacy automated release-checker history prerequisites are superseded only for this documented user-approved manual release decision; do not claim that legacy runner was executed or passed.
+所有 Stage 圖表均以 `stage_attachments` 的完整 PNG **純文字連結**在決策前交付，SVG 保留。**禁止在聊天使用 `present_figures` 內嵌圖片、`![alt](...)` 圖像語法、HTML `<img>`、多欄／圖文同列／圖片卡片，亦不得把圖表連結或說明放入表格欄位。** 先用一般段落解釋統計證據，再讓每個真實 PNG 連結獨立佔一行，中間空一行，最後才提出當前 Hard Gate 決策。不得重繪或重擬合以修復展示。單純生成連結不構成使用者已成功開啟的證據。
 
-Plan B PNG/offline HTML/A-B-C human acceptance remains PASS. Inline chat display retains historical FAIL; native clickable buttons remain unfinished and nonblocking. Independent Plugin host installation remains NOT RUN/NOT VERIFIED, outside the confirmed personal Skill scope. Do not interpret this release acceptance as approval of new research fits, publishing to third parties or deployment of independent services.
+**R4F 全研究真實圖表硬性規則（P4-ALL-VISUAL-01）：** Stage 1～5，包括聊天回答、研究報告、Markdown／QMD／離線 HTML，**只可展示當次真實觀測、核准模型、已保存標籤或統計計算產出的實際圖**。禁止網路圖像查詢、AsyncImage 示意圖、影像生成、模擬／合成散佈圖、任意圖形替代物，也禁止明知只有檔名卻宣稱圖片已顯示。即使要「輔助說明」也不能額外插入示意圖片；如無實際圖可用，說明限制並只列真正存在且可開啟的 PNG 附件，絕不補圖。輸出前核對 stage_attachments 的真實 PNG 路徑／收據及圖表與核准分析階段一致。Stage 4 真實分群圖在最終選擇之前交付；展示圖表不得觸發新模型擬合或逾越 Hard Gate。
 
-# Clustering Analysis Skill v1.0.0rc6 — Research Workflow & Visualization Fix candidate
+**R4F 指標可讀性規則（P4-18-METRIC-02）：** Stage 3 預先宣告本次實際適用的指標時，必須先用一兩句繁體中文說明「在比較什麼」，再說明數值方向；不可只說「分離較好」「越高越好」。Silhouette 係以同群觀測距離與最近其他群距離檢查群內緊密和群間區隔；重抽樣 ARI 是原分群與重抽樣分群的共同觀測指派一致性，不是利用真實標籤驗證。Stage 4 再用實際結果解讀，維持 Stage 3／4 計算、輸出界線及已批准的指標集合。
 
-## Plan B delivery contract — retained from 2026-11-15 (historical acceptance details below)
+在 Stage 2/3 決策前完整呈現 statistical_disclosure，加上實際資料、距離與 linkage 選擇理由。候選範圍須有依據，邊界最佳只能提議帶預算的新探索，不能自行擬合。Stage 4/5 不可增加未揭露的選群標準；Stage 3 payload 必須包含 planned_metric_evidence，Stage 4 機器比對實際使用的指標集合；異常須如實揭露。
 
-Use Plan B: every necessary statistical figure must be an individually openable/downloadable PNG attachment in its own stage BEFORE asking that stage approval. A/B/C text choices are supported; native clickable buttons and inline chat images are optional, nonblocking. Preserve historical inline FAIL and unfinished-button records. Never change them to PASS or remove them.
+研究敏感度比較：禁止在 Stage 4 或 Stage 5 偷偷嘗試新的插補、縮尾、刪除觀測或權重。如果要取得替代前處理的實際重擬合敏感度證據，應對**相同原始 CSV**另開一個獨立研究 Session，依 Stage 1～5 正式批准新前處理、同一方法與候選設定；兩份研究都取得 final 核准後，可呼叫 `compare_approved_studies`（輸入 reference_session、alternative_session、output_dir）生成唯讀配對 ARI、群大小、Silhouette 差及特徵更動報告。若有不同 K/eps 等參數，必須明確註明混雜，不得視為純前處理效果。此比較不計算任何新模型、不改動已完成的報告或批准。沒有兩個已批准研究時，只能提出待核准的敏感度研究計畫，不能宣稱已執行比較。
 
-Historical Iris repair record (not the current Stage 1 run): user confirms Stage 1–5 links appeared in the later repair response and sampled Stage 1 geometry, Stage 4 WCSS and stability opened successfully. These THREE files have human open PASS only. Other attachments remain human NOT VERIFIED. The original run lacked stage-local attachments before approval: timing FAIL remains; late repair is not retrospective compliance. Current final human acceptance: Stage 1–4 timely PNG attachment delivery and stage-level human opening PASS; Stage 5 offline HTML human reading including the K=3 partition PASS (2026-11-15). Final user acceptance also confirms Stage 5 final_partition.png opens with the correct K-means K=3 partition: overall Plan B image-delivery human acceptance PASS. Do not fabricate per-file opening receipts for other files; image delivery is no longer a Plan B release blocker. At that historic review point, overall release was NOT ACCEPTED pending evidence; see references/RELEASE_READINESS_REVIEW.md. For current post3 status see references/POST3_R2_RELEASE_READINESS.md. See references/PLAN_B_ACCEPTANCE.md (or PLAN_B_ACCEPTANCE.md within references). Do not rerun research to obtain that evidence without a new explicit request.
+新研究的 Stage 3 只規劃並批准候選及兩批運算預算；Stage 4 先擬合全資料候選，隨即在 Stage 3 預先批准的診斷預算內自動執行有界重抽樣 ARI 穩定性評估、解釋 Silhouette 並呈現選群圖（包括候選分割、穩定性、品質、最終模型）。既有 R4D 已核准的 Stage 3 ARI 可唯讀重用，不可重複執行。不得在新研究中計算、展示或使用 Jaccard。使用公開 CLI 的 `respond_current` 接收唯一、真實且新送達的 A／B／C（方法選單使用實際選項，例如 4）後，自動執行後續已批准工作與唯讀規劃，停在下一個真正的研究決策。不可直接以 `respond` 代替公開續行入口，除非明確只做底層相容性測試。也可在中斷後使用 `auto_continue`（無新批准）接續不需授權步驟。
 
-Plan B does not waive Hard Gates, four-method statistical checks, literature/research acceptance or actual plugin-loader installation validation. Formal Plugin host installation and GitHub post3 publication remain NOT VERIFIED / NOT PUBLISHED; they are distinct from the completed scoped research regression. Source/plugin/delivery ZIP preparation is not release approval; native plugin import NOT RUN is not installability PASS. Keep stage authorization tokens, scope and distinct-turn controls unchanged. Preserve approved scientific results.
+Stage 4 的候選上界問題應由使用者先確認擴展範圍與預算，再透過 `propose_candidate_expansion` 建立新 Stage 3 提案；歷史候選只在資料/方法/結果 hash 有效時重用，新的模型絕不可在批准前擬合。若前次已授權的候選 fit 批次已消耗但沒有結果，使用 `recover_interrupted_execution` 只重新建立待批准事項，絕不重送原執行授權。
 
-## Required PNG attachments and separate inline acceptance (2026-11-15)
+CLI 公開輸出由 privacy 遮罩。真 Gate token、期限與 nonce 僅保存在內部狀態；使用者端只看研究決策與 A／B／C，不印出完整 token 或期限。Stage 3 預設候選是具預算限制的**探索提案**，不是自然 K 證明；若資料/幾何不足，須停止並解釋原因。Work 原生自動調度、安裝與真人驗收仍待測。詳見隨交付的驗收矩陣與 Release Readiness Report。遇到未實作需求，明確停止或說明，不以歷史 PASS 取代。
 
-This section supersedes older inline-first/fallback-only instructions throughout this package.
-At EVERY Stage 1–5 that generates statistical figures, deliver ALL actual PNGs as individually clickable/openable/downloadable attachments in the CURRENT stage response, alongside interpretations. Final ZIP retention, filenames, paths, JSON, private image reads and rich image output alone never satisfy this minimum. Inline images, if available, are additional; they never replace PNG attachment links.
+嚴格重現使用報告 reproduce.py --verify。失敗保留鑑識紀錄，不能改判成功。離線 HTML 無外部依賴；QMD 預設不再執行擬合。發布、覆寫已安裝版本及公開研究資料另須明確授權。Work 真人安裝及自動調度為 HOST_ACCEPTANCE_NOT_RUN。
 
-Call CLI `stage_attachments(stage=N)` after the current stage figures exist. It reuses existing files, validates every PNG and returns `attachment_markdown` plus per-file hashes/receipts. Emit ALL returned Markdown links as normal links (not image syntax or code blocks) in the current user-facing response before asking the stage decision. On Work, `[name.png](<sandbox:/absolute/path/name.png>)` is the attachment route. JSON output is construction only, not delivery. On unsupported hosts use the supported file-attachment upload route. Missing/unopenable attachments are a distinct P0 delivery defect; report it and repair file delivery before requesting the next research decision. Never fit/refit to repair presentation.
+歷史文件保存在 references，均不是 post4 驗收。既有數學核心與詳細操作 schema 見 references/OPERATOR_GUIDE.md 與 METHODOLOGY_AND_IMPLEMENTATION_SPEC.md；與此版本公開 UI 契約衝突時，以此文件優先。
 
-Acceptance has three independent columns:
-1. PNG generation: PASS only for existing complete decodable PNGs, with path/hash.
-2. PNG attachment delivery (minimum, mandatory): construction PASS is separate from actual response submission; human open/download remains UNVERIFIED until the user confirms. User-reported absent/unopenable attachments are FAIL. Check every generated figure in each stage, not only a representative figure or final ZIP.
-3. Chat inline display (advanced): this Iris/K-means human test is FAIL. Do not relabel it PASS from decoding, attachment success, image-content construction or submission. Do not repeat already failed inline mechanisms; no inline retry during attachment remediation.
 
-Historical Iris run: PNG generation PASS; stage-local PNG attachment delivery FAIL (Stage 1 confirmed absent, Stage 2–5 individual links likewise omitted in transcript); inline display FAIL per human report. A late repair does not retroactively pass stage-local delivery. New links can be submitted for separate human opening checks. The original Iris case retains its historical FAIL; this paragraph does not overturn post3 scoped research verification.
+## R4H Session 持久化及恢復（P4-SESSION-PERSISTENCE-01）
 
-## rc6 workflow and image-output contract
+**適用於所有階段，包括新研究 Stage 4 最終選群及舊 Session 原有的 Stage 3/4 結果確認後續行。** 正常研究不要求使用者自行上傳或編輯 `session.json`。CLI 的 `create` 可不提供 `session`，系統自動在私有的持久化研究根目錄建立新 Session；後續呼叫可不提供 `session`，自動以最近正式選定的研究 Session 接續。宿主可設定 `CLUSTERING_STATE_ROOT` 為**跨回合確實保留的私有資料夾**；未設定時使用使用者私有的本機應用資料目錄（Unix `~/.local/share/clustering-analysis/research-sessions`，Windows `%LOCALAPPDATA%/ClusteringAnalysis/ResearchSessions`）。每次 CLI 調用後保存可驗證的 Session 快照；指定的舊執行目錄已消失時，只有同一研究 ID、原始資料 SHA-256 及原先目錄完全符合的備份才能接續。已寫入的核准 Token、實際回覆及候選結果保持不變；絕不由聊天文字推測批准、建立虛構 Session 或重跑候選擬合。
 
-Read `references/RC6_WORKFLOW.md` before analysis, presentation or testing. Its current rules supersede older rc5 interaction/display notes where they conflict. Use the EDA handoff, one-step method choice, supported image-content output bridge, PNG-first/offline-HTML report and synchronized final status. Earlier rc6 draft installation / inline visibility status remains historical; post3 publication and host installation are still NOT VERIFIED. P0 human client visibility is not established by file generation alone; never infer it from files, decoder success or submitted tool content.
+- 新研究：`{"action":"create","csv":"/absolute/input.csv"}`（原研究仍可顯式指定 `session`）。
+- 唯讀查看目前研究：`{"action":"resume_current"}`；回傳階段、已記錄批准及尚待決定的項目，**不執行模型、不消耗批准、不推進階段**。
+- 只有在取得**新的、真實觀察到的**使用者選項後才能呼叫 `{"action":"respond_current","response":"A"}`，沿用原 Gate 設計；不得將使用者安裝套件、詢問狀態或這份文檔視為 Stage 4（舊研究 Stage 3）結果確認。
+- `session.json` 或備份遺失、研究識別不相符、原始資料雜湊不相符時，必須 fail closed，明確停止。不能把僅有的 Skill 安裝 ZIP 當成有歷史授權的 Session。
+- **宿主限制**：套件只能保證**同一持久化磁碟根目錄**中的跨行程／跨回合恢復；若聊天或 Work 的執行環境全部銷毀且未保留此目錄，無法自動復原。此平台情境仍需真人驗收，不能宣稱已修復所有跨容器遷移。
 
-Read `references/METHODOLOGY_AND_IMPLEMENTATION_SPEC.md` and `references/LITERATURE_AUDIT.md` before analysis. Preserve their Stage 1–5 workflow. Read `references/ACCEPTANCE_MATRIX.csv` when validating this candidate. Treat the packaged `evidence/` as engineering evidence, never as proof of installation or every statistical rule.
+## post4 A 類修復（dev4a 工程規則）
 
-## Default interaction mode — pure Skill
+- 初始 K 探索在尚未擬合前，使用已核准資料的有界單變量直方圖線索、n、方法成本及預算；不能假定弱峰數等於真實群數。PAM 大樣本的保守上界須標示是計算限制。邊界或衝突需新 Stage 3 授權才能增加候選。
+- Hierarchical 預設候選可一併提出**同 K** 不同 linkage（Gower/Single/Complete/Average 或 Euclidean/Ward/Average/Complete/Single）；數值資料另可提 Euclidean/Manhattan 配 Average 對照。新增候選都算入明確預算，批准前不得擬合。Stage 4 只比較實際批准的相同 K／距離／linkage 條件。
+- Stage 3 必須在候選提案內綁定 planned_metric_evidence。Stage 4 使用選群指標前須比對既有宣告，未宣告不得使用為選群證據。
+- 若需變更前處理後的實證敏感性，請另開**同一原始 CSV 的獨立研究**，完整批准 Stage 1～5 到 final 決策。研究都完成 final 後，可使用唯讀 `compare_approved_studies` CLI：`{ "action":"compare_approved_studies", "reference_session":"...", "alternative_session":"...", "output_dir":"..." }`。無相同原始輸入、相同方法、原始列順序可對齊或缺少正式批准時，必須拒絕。它產生 `approved_sensitivity.md`、`.json` 和 `feature_changes.csv`，不會重新擬合或編輯兩份研究。
+- 本候選版僅表示 A 類已在本機補強；正式 post4 仍需完成 B 類及 Work Host 真人驗收。
 
-Use the existing local Python implementation and Stage 1–5/six-gate workflow with one-step method selection. Read `references/PURE_SKILL_INTERACTION.md` for current user-facing interaction rules. Prefer a supported clickable chat-choice component when its returned answer can be reliably bound to the displayed pending gate; otherwise show concise A/B/C text options and accept a single choice. Never require a natural-language approval sentence. All approvals still use the existing Hard Gate; a click, a visual selection or a bare option is not independent authorization. Keep the standalone MCP/OAuth/Plugin-UI prototype optional and separate: do not require, start, deploy or develop it during normal analysis without a new explicit request. Do not add MCP/OAuth dependencies or change the statistical algorithms. Retain honest candidate/release status.
+## post4 B 類修復／驗收（R4B 本機候選）
 
-## RC5 Four-Method requirements
+- Stage 1～5 QMD/Markdown/HTML 的 Python 程式碼，從交付報告目錄直接執行時會自動載入 `reproducibility/clustering_native`，不要求外部設定 `PYTHONPATH`；須事先安裝 Python 依賴。
+- Stage 4 報告程式碼只依已封存重抽樣結果呈現 ARI，本版只輸出 ARI 的穩定性，歷史研究檔仍保持原貌。
+- 五個 QA 合成研究案例（K-means、K-medoids/Gower、DBSCAN、Hierarchical/Ward、Hierarchical/Gower/Average）均完成 Stage 1～5、五段程式碼獨立執行、QMD/HTML 一致與嚴格重現。QA 使用 `qa_fixture`，不冒充真人授權。
+- Quarto CLI 在本地環境未安裝，原生 Quarto render 為 `NOT RUN`，但離線 HTML 已檢查。PAM 的高成本增量擴展批次在本輪逾時，不記 PASS。
+- 研究報告中的程式碼為封存快照的**可執行唯讀重建與實際模組呼叫入口**，不會在閱讀時偷偷擬合。模型嚴格重新擬合與比對由 `reproduce.py --verify` 執行。
+- post4 正式發布及 Work 真人驗收仍未完成，不得覆寫現有已安裝版本。
 
-Read `references/RC5_CHANGES.md` for historical method requirements. The post3 R2 candidate has scoped research acceptance but formal Plugin host installation is still NOT VERIFIED. All prior live history is historical only.
+## R4C 九項修正：報告與決策控制
 
-Resolve the current pending item/token before parsing a complete original reply. Record recognized downstream nonauthorization clauses in scope_constraints; they never authorize candidates. Unknown or contradictory scope stays CLARIFY. Never shorten a reply to bypass parsing. Revision increments the gate revision and invalidates affected downstream evidence; show the updated plan and wait for a fresh reply.
+- Stage 1～4 僅輸出各階段診斷、圖表、待批准計畫和 checkpoint；不得自行呼叫完整 report、Quarto 或研究 ZIP 重現交付。Stage 5 才產出正式完整研究報告。
+- Stage 3 的 Linkage 比較 K 依初始探索範圍低／中／高位置而非任意固定一點；控制對照不能宣稱比較過各 Linkage 的最佳 K，完整比較須另批授權。
+- 只顯示本次方法實際使用或已批准的選群指標；Stage 3 說明判讀方向，Stage 4 報告 Silhouette 與 ARI 的衝突。
+- Stage 4 正文先回答測了哪些 K、選哪個 K／方法組合、為什麼，Stage 5 應有逐群描述及群間比較；只列已批准方法及候選。
+- QMD／離線 HTML 各階段 Python 程式碼須可收合；Markdown 仍保留原始完整程式碼。
 
-Inspect actual approved-data geometry plots and call `record_visual_evidence` before Stage 2 recommendation where numeric scatter/pair plots are available. Do not infer structure from dataset names. Call `candidate_guidance` before Stage 3 planning; link ranges to EDA, objective, method limitations or honest exploratory defaults.
+## R4D 真人驗收修正（五項）
 
-Stage 2 MUST present `recommendation.primary`, `secondary`, `rationale`, and all `method_reasons` automatically with the four evidence rows. Empty primary is valid; do not manufacture a full ranking. Explain the user retains the final choice. Stop at S2_REVIEW.
+- **P4-S2-PRIORITY-01：** Stage 2 的正式比較須使用 `assessment.methods[].recommendation_priority`、`priority_tier`、`recommendation_reason` 與 `recommendation`；顯示四方法推薦優先度、理由及「可執行≠適合形狀」。`propose_method_choices().recommendation_priorities` 可直接做決策介面，但選項數字 1～4 不是排名。允許同級並列，Hard Gate 最終選擇仍由使用者決定。
+- **P4-S2-REPORT-RATIONALE-01：** Stage 5 的 Stage 2 章節需基於經核准的 Stage 1 幾何狀態與當時的 Stage 2 評估，說明觀察、所選方法相較其他方法的適合性，以及不確定性。不得將英語 `observations` dictionary、JSON 或內部推理狀態直接印進研究正文。原始證據保留在獨立 JSON；不可借用事後的 Stage 4 勝選結果補寫事前理由。
+- **P4-DBSCAN-EPS-01：** Stage 3 在讀取實際 k-neighbor 距離後提出有界 eps 搜尋，涵蓋 P25／P50／P75 及 P90／P95 以防上界過窄；有資料支持時可額外提出一個啟發式轉折值，但不得稱為已證明 knee。顯示所有實際 eps 與來源。Stage 4 使用已批准的群數與雜訊趨勢提出上界審查，不能擅自新增模型擬合；既有 `propose_candidate_expansion`、Hard Gate 與結果重用原則完全保留。
+- **P4-README-METRIC-01、P4-README-DBSCAN-01：** README 以白話解釋適用指標、方向、`min_samples` 自身計數、k-neighbor 排除自身、分位數到實際 eps 的轉換及擴展限制。README 可以說明全部受支援指標，但各次研究報告只列實際規劃／使用的指標。
+- 本輪修復不得修改既有研究模型、批准或歷史報告；四種方法、Stage 1～5、重現驗證、PNG、QMD／HTML 程式碼收合都必須維持。Work Host／原生 Quarto 轉譯仍需另行驗收。
 
-For every `figure_previews`/`figure_previews.json` entry, prefer the current host-supported inline presentation of its existing PNG (submit actual PNG image content using the current host channel; human visibility remains unverified). Follow the host presentation contract; do not substitute a tool-side image read for user-visible display. If that surface is unavailable, try a real Markdown PNG image; if it cannot render, offer openable PNG/SVG attachments and state the limitation. Retain PNG/SVG in delivery. `displayed=false` is availability metadata, never proof the user saw it. Distinguish image decoding, response emission and actual client display. Do not rerun models or diagnostics for presentation.
+## R4E 歷史階段界線與圖像要求（僅供舊 Session，R4H.3 新研究以新版規範為準）
 
-Retain actual CLI execution_events.jsonl and reproduction logs. Direct Python API usage may have no CLI log: say NOT RECORDED, never reconstruct a transcript. Report historical rationale separately from current state.
+- `P4-S3S4-RESULT-BOUNDARY-01`：Stage 3 執行批准後只進行全資料候選擬合，Stage 3 規劃及授權回應不得包含模型執行或 ARI、選群品質排名。候選設定（包含重抽樣率、次數、種子、政策、預算）必須先經 Stage 3 授權。Stage 4 的 `diagnose_approved` 在 `S4_REVIEW` 才執行已授權的重抽樣，保存事件與有效結果；不得新增全資料擬合，出錯後不得復用舊許可自動重試。增量擴展保留舊 Stage 4 穩定性批次，只對新批准候選評估。
+- Stage 4 交付 `candidate_partitions.png`（僅實際二維可繪觀測，沒有虛構的 PCA）、`quality_and_sizes.png`、`stability.png` 及方法適用圖。最終候選批准後即交付 `stage4_selected_partition.png`，Stage 5 引用它，不延後才呈現。二維投影不等於整個混合變數空間。
+- Stage 5 研究敘述須以已核准 EDA 幾何觀察、實際標籤與數值範圍為依據。不能憑所有二維資料都聲稱彎月或自然兩群；雜訊點不是額外一群。DBSCAN 候選名稱統一 `D1...Dn`，其餘方法 `C1...Cn`，原決策稽核原文維持不變。
+- 新研究 Stage 3 不產生模型執行圖；移除固定 K 重複群數的冗餘預覽；候選執行、群組分布、品質與穩定性評估均屬 Stage 4，且全部圖在最終選擇前提供。僅對繪圖與文字進行重組不可變更已核准模型、資料或對照指標。
 
-## Run the bundled implementation
+## R4F 最小修補驗收界線
 
-Use the host's Python runtime and bundled `clustering_native` module. Set the working directory to this skill directory or add it to PYTHONPATH. Call `python -m clustering_native --request /absolute/request.json`; the agent writes requests and executes them. Never ask ordinary users to run code, install R, or configure an analysis environment. Check imports first. If SciPy/sklearn are unavailable, report the specific unavailable action; keep EDA and review artifacts, do not fabricate model results or replace the algorithm.
+- `P4-ALL-VISUAL-01`：整份研究及聊天輸出禁止使用與實際研究無關的任何示意圖；Stage 1～5 僅可使用由已完成資料／標籤生成、含可驗證路徑與雜湊的真實 PNG／SVG。圖像不足時提供現有附件，禁止額外搜尋或生成替代圖。
+- `P4-18-METRIC-02`：只對本次已批准的指標說明其「衡量對象」及「方向」，維持 Stage 3 預先宣告、Stage 4 才進行品質與重抽樣評估的職責。
+- Stage 5 現有 Markdown、QMD、內嵌離線 HTML、五段可收合 Python、研究 ZIP、Strict Reproduce、Hard Gate 與增量結果重用不可退化；舊版 R4E 保留。
 
-Read `references/OPERATOR_GUIDE.md` for action schemas, explicit parameter examples and recovery. Use one action per invocation; reload `status` after each action. Store each analysis in a fresh directory. Keep original input snapshots private. Do not modify session JSON to bypass a gate.
 
-For a *new, directly observed* user reply when the host exposes no actual user-turn/message ID, use CLI `respond_observed(item,token,response)`; do not supply `message_id`. This action generates one local invocation receipt and explicitly labels it `AGENT_ASSERTED_NEW_USER_TURN_NOT_PLATFORM_VERIFIED`, **not** platform-authenticated click or identity evidence. Call it only after the user actually answers the currently displayed, still-valid pending proposal. Keep the complete exact original user text, never infer an A from earlier conversation or reuse a prior reply, and verify the current token via `status`. If no fresh user response is observable, stop; do not call this action. A request for an explanation (e.g. `B：為甚麼保留？`) is CLARIFY rather than an approval; leave the pending proposal in place and let a subsequent fresh A approve it. A real revision needs an updated proposal and fresh approval. The explicit reference path `respond(item,token,response,message_id,source=user)` remains supported when the host/operator has a genuine distinct reply reference; both paths run the **same unchanged Gate**. The fallback receipt offers local transaction traceability, not cryptographic proof that a different human turn occurred; do not mislabel its evidence.
+## R4H — 新研究變數角色與事後分析（保留 R4G 兼容）
 
-Use RC4 `respond(item, token, response, message_id, source=user)` for actual replies. Preserve the complete original reply. It returns APPROVE / REJECT / REVISE / CLARIFY; supported natural-language approvals and short A both work. Read the RC3 section in `references/OPERATOR_GUIDE.md`. The deterministic recognizer accepts only unambiguous clauses referring to the current pending scope; never manually set APPROVE to override CLARIFY, extract an A substring, rewrite a reply, or invent a user message. If a phrase is unsupported or uncertain, ask one concise clarification. A revision takes precedence and revokes affected downstream state; present the changed proposal before requesting fresh authorization. Legacy UNCERTAIN remains accepted as a non-advancing CLARIFY-compatible state. This is local provenance, not identity authentication.
+新的 JSON CLI `create` 預設進入 `S1_ROLE_REVIEW`，先顯示來源欄位及暫定角色，並透過 `propose_feature_roles`／`respond_current` 獲得獨立的 Stage 1B Hard Gate。角色必須包含每個來源欄位，選項為 `feature`、`supplementary`、`id`、`exclude`。此步驟不擬合模型，不改變原始 CSV；用戶可先修改建議，禁止視預設為授權。
 
-Tokens bind the analysis session, stage, item, proposal nonce, revision, dependencies and payload. Pending tokens expire after 24 hours; use `renew_confirmation` only after showing the still-current proposal again, then wait for a new explicit decision. Renewing never approves it. An earlier token, another session's token or the Stage 3 execution token cannot confirm results. Six separate approvals require six distinct user-turn references; consumed references remain recorded across rejections, renewals and revisions, so an old reply cannot authorize a changed plan. Never mix `qa_fixture` and user-declared approvals; restart and reconfirm from Stage 1 for real analysis after QA. These are local provenance/binding controls, not identity authentication.
+只有批准角色後才能提出 `propose_preprocessing`，其 `schema[*].role` 必須逐欄符合批准紀錄，並在第二個 Stage 1 前處理 Hard Gate 後進入 Stage 2。既有 R4G Session 及 Python 程式可用 `require_feature_roles=false` 相容入口，不能偽造 role approval。變更已批准角色需回到 Stage 1 重新授權並使下游失效。
 
-Reject RC1 session approvals as legacy; start an RC2 session and obtain confirmations again. Never migrate old nonempty reply strings into trusted RC2 approvals. Changed approved plans, candidates, model data or result bindings revoke affected/downstream authorization and stale reports before any later action.
+`propose_feature_roles` 可另外保存研究問題（`research_question`）及事先指定的關聯變數對（`association_pairs`）。事後分析變數不能參與建模距離、K 規劃或品質指標。Stage 5 使用原資料列位置與既有批准標籤對齊，輸出 `supplementary_values_by_cluster.csv`、事後群間數值／類別比較；只對事前指明的兩變數計算 Spearman，不自動做迴歸或因果聲明。
 
-## Stage 1 — Automatic EDA, then stop
+Stage 1 所有 EDA 軸與標籤必須顯示實際欄名，不得使用 F1/F2。Stage 3 對照真實多變量 EDA 連通間隙（MST，受資料量與尺度限制），與單變量線索及運算預算一起規劃候選 K；該線索不是已擬合模型或最佳群數的證據。Stage 4 不輸出 Medoid 列號散佈圖，改用真實代表觀測特徵及群組大小。
 
-Call `create` with the CSV and optional dictionary. Present the actual type/role table, uncertainty, dictionary conflicts, missing denominators, duplicate distinctions, numeric summaries, IQR flags and data-specific preprocessing alternatives. Treat integer and binary semantics as uncertain unless declared; do not silently use them as continuous features. Do not turn supplementary labels or IDs into predictors. Ask for unresolved ordinal levels and binary symmetry.
+對外名稱固定為 K-medoids（本版以 PAM 演算法求解），內部方法 ID 維持 `pam`，以保存 R4G 資料相容與重現。全程禁止示意圖，Hard Gate 與 Session 持久化不變。
 
-Display the actual PNG EDA and geometry figures through the host-supported image output channel, with Traditional Chinese explanations immediately beside/below them. Use English aliases inside figures and map aliases to columns in the explanation. Disclose the first-eight-feature display limit; complete tables cover every column. Do not deliver only file links.
 
-Propose a complete schema, roles, selected-feature actions and positive weights. Explain each missingness, scale, transform and exclusion decision using observed data, risks and alternatives. Call `propose_preprocessing` to validate a copy and obtain its token; the original remains untouched. Present A accept / B revise / C supplement. Only an actual APPROVE from the current reply permits Stage 1 advancement. Use `respond` for natural-language or short-option replies. B/C stay in Stage 1 and discard the proposal. Do not continue while unresolved decisions remain.
+## R4H.2 已執行前處理揭露（R4H-S5-PREPROCESS-DISCLOSURE-01）
 
-## Stage 2 — Evaluate all four, lock one
+- Stage 5 必須依據核准 `preprocessing_plan`、**實際執行的** `fitted_preprocessing` 及對齊的原始／模型快照，描述每一項分群特徵的角色、缺失值處理、實際插補值、類別對照、數值轉換、Z-score／Robust scaling／無標準化、擬合中心與除數、距離權重及處理前後可觀察的數值狀態。
+- Z-score 使用 `ddof=0` 母體標準差；Robust scaling 使用 median 與 IQR。擬合中心／除數取自缺失處理和數值轉換**之後**的資料；不可混寫為原始平均數／標準差。
+- `analysis.md`、`analysis.qmd`、`analysis_offline.html` 必須包含一致的研究方法說明；`preprocessing_effect_summary.csv` 供逐欄核對。`config.json` 及快照持續保留。
+- 禁止補寫未實際執行的標準化、插補、模型、替代比較；擬合紀錄與核准設定不一致時報告應安全停止，不得補造數值。
+- R4H.1 單欄純文字 PNG 附件政策、Hard Gate、Session 重建限制及全部演算法保持原樣；真人展示與跨方法全套驗收仍須獨立驗證。
 
-Call `assess_methods(purpose=...)` after stating the intended research purpose; the default is exploratory partitioning, not an inferred personal goal. It conditionally computes bounded Euclidean neighbor diagnostics from approved numeric data (at most 500 rows and 32 MiB estimated work); missing/mixed geometry or budget excess stays explicit. Never fit an estimator, choose eps or claim natural groups in Stage 2. Display its actual density PNG through the image output channel with Traditional Chinese interpretation when computed. Present all four rows with observed EDA numbers, compatibility, risks, follow-up and reasons. Use only 適合／有條件適用／不適合／資訊不足; no invented suitability scores. Distinguish 適合 (purpose and observations support exploratory use), 有條件適用 (specific important limitation), 資訊不足 (missing key information), and 不適合 (representation or purpose conflicts). Natural-group existence is a separate unknown, never a blanket reason to downgrade every method. Numeric storage alone is not a recommendation. Explain each result using observed data; do not force label diversity. Stop if the user declines all methods. If a method requires different preprocessing, `revise` Stage 1 and repeat its approval.
+## R4H.1 最小聊天排版修復（R4H-VIS-LAYOUT-01）
 
-Call `propose_method_choices` before displaying current numbered options. Process the exact user choice with `respond`; this one decision approves the selected method for Stage 3 planning. Do not request another A for that choice. Keep `propose_method` for legacy operator compatibility. Never fit a cross-method competition. Sensitivity uses the locked method only.
+真人截圖顯示 Stage 4 有圖片灰框、說明被擠成逐字直排、大面積空白。已驗證研究 ZIP、PNG 解碼與 HTML 引用時，不得因此宣稱聊天端已修復。此版僅對聊天輸出入口做最小改動：
 
-## Stage 3 — Two separate confirmations
+1. 強制 `stage_attachments(stage=N)` 回傳的全部真實 PNG 以**單欄普通 Markdown 文字連結**交付，每個連結單獨一段，不和圖表解釋形成並排容器；禁止聊天室中內嵌圖片與表格放圖。
+2. 歷史 `present_figures` 入口轉接到完整的附件清單，保留舊版 `start`／`limit` 參數檢查但不會用它們省略任何必交 PNG；不再向聊天室回傳 Base64 image blocks。`image_batch()` 僅留作模組內部相容 API，並非使用者聊天展示路徑。
+3. PNG／SVG 的實際統計圖檔、Stage 1～5 計算、Session、Hard Gate、批准的模型及 Stage 5 Markdown／QMD／離線 HTML／ZIP 一律不變。
+4. 測試只能驗證連結文字結構、文件／CLI 路徑和 PNG 可解碼；平台端排版與用戶可下載須後續真人驗收，因此 `R4H-VIS-LAYOUT-01` 維持 `HOST_NOT_RUN`／`OPEN`，不得自動判 PASS。
 
-Read `references/RC5_SELECTION_EVIDENCE.md`. Require `parameter_sources` for every candidate/config key (source=data_diagnostic/research_purpose/methodological_limit/exploratory_default/user_specified plus rationale), `search_rationale` and `boundary_limitations`. Never invent a data-supported K upper bound or use external truth labels. K-means additionally requires an explicit `initialization_plan={"seeds":[17,19]}` (or another bounded 2–20 distinct seed list): separate n_init=1 diagnostic fits, not the internal starts of the primary n_init. Disclose every candidate, subsampling, initialization and verification fit before approval. Missing provenance/budget blocks the proposal.
+若 references 內較早的說明提及 inline-first、Markdown 影像、或 functions.image 橋接，**以本 R4H.1 規則優先**；不再重試已知失敗的內嵌路徑。
 
 
-Provide explicit candidate configurations, exploratory-only or evidence-supported basis, observed evidence/limitations, row/memory/candidate/time budgets. Use `density_diagnostic` for DBSCAN when useful; disclose min_samples includes self and do not derive eps from a universal threshold. Do not invent EDA-supported K from an arbitrary 2..5 range.
+**R4H.3（dev14）既有規範：** 新 CLI `create` 研究的 Stage 3 只有候選規劃與計算範圍 Hard Gate；已核准候選由 Stage 4 執行 (`S4_EXECUTE`)，停於獨立結果確認 (`S4_RESULTS`)，確認後才執行已預先授權的重抽樣 ARI 與品質比較。固定 K 候選群數長條圖完全不產生。Stage 4 正式選群僅保留 Silhouette、ARI、群組大小及方法適用的 WCSS/Medoid objective/DBSCAN 雜訊等，不計算或展示 Calinski–Harabasz、Davies–Bouldin。舊 R4H.2 Session 以原核准狀態唯讀相容，不把歷史批准自動轉成新流程。GitHub README 及流程圖依發布前待辦延後修改。
 
-Call `propose_candidates` with `diagnostics_plan={fraction:0.8,repeats:20,seed:17,policy:"fixed_full_data_preprocessing"}` or an explicitly chosen bounded alternative. Present candidate fits plus the exact Stage 4 fit count, per-fit time, memory, and worst-case total time, and disclose a full reproduction rerun separately. The candidate token binds this diagnostic plan. Call `propose_candidates`; present the exact list and resource estimate. Wait for permission and call `permit_execution` with the actual response. Then call `fit_candidates`. Do not fit earlier. On any failure, report it and return to Stage 3 for revision; do not silently remove a failed candidate or change parameters. Show fitted results and warnings. Wait again; only `confirm_results` opens Stage 4.
 
-Keep Lloyd distinct from Hartigan–Wong; n_init and seed explicit. Reject Gower+Ward. Do not add K to DBSCAN. Preserve PAM BUILD/SWAP deterministic tie handling, medoid rows, objective and local-only optimality. Gower needs declared ordinal levels, binary semantics, pairwise missing comparison and constant-column omission. Undefined pairs stop distance-based fitting.
-
-## Stage 4 — Diagnostics and human decision
-
-After `diagnose_approved`, present the actual `selection_evidence.figure_previews` and candidate table immediately: method-compatible quality/objective, group sizes, effective n/observation-set hashes, stability with failures/nulls, and method-specific trees/heights, medoids or density sensitivity. Stage 4 evidence files are hash-bound. K-means seed diagnostics consume the same one-time bound budget. Do not fit extra linkage/parameter variants without a revised Stage 3 plan. For hierarchical fits, the supplied adjacent-cut sensitivity is distinct from resampling and does not establish robustness to untested linkages.
-
-Before `propose_final`, supply `selection_explanation` with chosen_reason, candidate_reasons for every zero-based candidate, conflicts and limitations; optional retained_candidates allows parallel exploratory alternatives without inventing multiple approved final partitions. The final index remains one existing candidate or null. Reveal both search boundaries and upper-tail trends even when preferred K is interior.
-
-
-After results are confirmed, call `diagnose_approved` to perform the already disclosed routine plan without another confirmation. It consumes the approved diagnostic budget once; changed settings, extra repeats, or cost expansion require a revised plan and real user approval. For legacy sessions without a bound plan, return to Stage 3 and obtain a new approval for a bound plan before any diagnostic fit. Both `diagnose` and `diagnose_approved` refuse an absent bound plan. Call `diagnose` only with the exact bound settings. Fixed/refit preprocessing policy must be disclosed. Report failed resamples and absent-cluster nulls. Explain that fixed transformed data still re-estimate Gower ranges within each subsample. ARI compares identical unique internal IDs; common-ID max-Jaccard is NOT Hennig bootstrap. DBSCAN ARI retains noise; clusterwise Jaccard uses all sampled IDs and excludes noise as a candidate group, so newly-noise members reduce similarity rather than disappear from its denominator.
-
-Use only method-compatible indicators. Never treat Gower as Euclidean CH/DB input; never turn undefined silhouettes into zero. WCSS decreasing alone cannot select K. Do not invent stability pass thresholds, weighted composite scores or majority-vote winners.
-
-The legacy `sensitivity` entrypoint is blocked: new variants require a revised Stage 3 plan/budget; preprocessing changes return to Stage 1. Never overwrite approved data/config. Warn when preferred K is at a candidate boundary; return to Stage 3 for any expansion. Permit no-final-model. Call `propose_final` with candidate index or null and research rationale; wait for `approve_final`. Do not produce a final model without confirmation.
-
-## Stage 5 — Research outputs, then final delivery confirmation
-
-Include all Stage 4 selection-evidence plots and CSV/source sidecars, the full candidate configurations/provenance, effective counts and failures, the approved explanation of chosen and nonchosen candidates, conflicts and boundary limitations. Reuse and verify Stage 4 file hashes; do not rerun fits to render the report. Copy the actual figures to Markdown/QMD and retain PNG/SVG attachments. A no-final-model report remains complete research output, without final cluster_assignments.csv.
-
-
-Call `report` into a fresh directory. Present research conclusions consistent with the approved decision, actual figures, key profiles and limitations. The report includes MD, Python-only QMD, raw/model feature snapshots, candidate metrics, assignments, model details, diagnostics, environment, decisions, hashes and executable reproduction. Original identifiers and supplementary labels stay out of public report snapshots. Features may still be sensitive; do not publish them automatically.
-
-Use neutral Cluster names; keep DBSCAN Noise separate. Report raw-unit valid n separately from transformed data; preserve categorical denominators and ordinal distributions. Explain centroids versus actual medoids. With null final choice or fewer than two nonnoise groups, do not create final cluster_assignments.csv; candidate labels remain exploratory. Avoid causal labels and naive post-selection p-values as independent evidence.
-
-Read actual `render_status.json`: claim Quarto rendered only after real CLI success. Otherwise deliver the honest readable Markdown fallback; Python chunk success is insufficient. Cross-check files, figures, counts and config. Execute `reproduce.py --verify` within the disclosed verification budget when dependencies allow and disclose its actual result. It emits real timestamped stdout events and `reproduction_events.jsonl`, including failures; retain capture logs. No log means no recovered transcript: label it honestly. If a successful actual Quarto render already executed verification and produced a current PASS, reuse that evidence instead of repeating the full run. After generating logs or correcting report-only text, call `refresh_delivery` to bind new file hashes and invalidate the earlier delivery token; never edit session JSON. A refreshed report requires new delivery confirmation. Model data, CSV, config and candidate/diagnostic changes are forbidden in delivery-only refresh. Obtain final user review via `confirm_delivery` with a structured decision; only then mark the *analysis* complete. A QA receipt says QA_FIXTURE_CONFIRMED; a declared user response says USER_CONFIRMATION_RECORDED. Neither proves successful installation or audited real-user interaction by itself.
-
-Historical rc6 release runners `scripts/run_validation.py` and `scripts/release_check.py` are **not included in this post3 package**; do not claim they were run. Use the packaged `scripts/test_*.py` regression tests and the separate actual 312-record acceptance evidence. Exit 0 is reserved for ACCEPTED, 1 blocks on actual case/static/loader errors, 2 means INCOMPLETE, 3 means runner/infrastructure error. Keep PASS, FAIL, ERROR, SKIP and NOT RUN separate. A completed runner, green focused unit tests or fixture COMPLETE must never be presented as formal release acceptance. Preserve unconditional research/installation placeholders and original 33 baselines; do not waive them or relabel them PASS.
-
-## Revision and unvalidated research
-
-Call `revise(stage, reason)` for earlier changes; it revokes affected and later approvals and evidence. Mark prior report directories obsolete in conversation; do not present an earlier report as current after revision. Start a new session for changed input bytes. Never skip a gate on restart.
-
-Keep Hopkins, VAT, Gap and complete Hennig bootstrap disabled and explicitly NOT VALIDATED. Do not fabricate their statistical rules. Do not claim the original 14 PDFs were re-read if only the packaged audit is available. Do not publish to GitHub without a separate user decision following formal acceptance.
-
-## Historical rc6 draft candidate status (not the post3 decision)
-
-At the earlier rc6 draft review, this package was NOT ACCEPTED for release. Preserve the rc4 archive and historical test applicability mapping. Keep retained solvers unchanged; engine edits remove the retired branch only. Historical Wine real-user context is not rc5 human acceptance. Automated qa_fixture replays never count as human confirmation. Do not publish GitHub or activate this disabled development candidate without the user’s decision.
-
-For the current Plan B acceptance and release review, read `references/PLAN_B_ACCEPTANCE.md` and `references/RELEASE_READINESS_REVIEW.md`; preserve historical failures separately from current scoped human PASS.
-
-For the latest review based on the actual uploaded Source/Plugin/Delivery archives and research snapshots, read `references/FINAL_PACKAGE_REVIEW.md`; it supersedes earlier unavailable-archive conclusions without rewriting historical evidence.
-
-## RC6-COMPAT-01 candidate revision
-
-This historical compatibility revision was v1.0.0rc6.post1; the current package version is v1.0.0rc6.post3. Read references/RC6_COMPAT01_REVIEW.md for the two supported method payload schemas and validated compatibility repair. The normal menu and all Hard Gates remain unchanged. Historical missing baselines are HISTORICAL EVIDENCE LOST under the user-authorized replacement proposal, never PASS. Release remains NOT ACCEPTED until explicit approval of references/HISTORICAL_WAIVER_FOR_APPROVAL.md; permission to repair is not waiver approval. Independent Plugin installation remains unverified and is outside the confirmed personal Skill release scope.
-
-
-## RC6-GATE-BRIDGE-01 candidate addendum (v1.0.0rc6.post2)
-
-At the time, post2 was an independently packaged **UNACCEPTED** integration repair candidate; the original v1.0.0rc6.post1 Personal Skill release and its evidence are retained without modification. The new operator-observed receipt bridge and B-question -> fresh A regression must be manually tested in a clean installation before any acceptance claim. Older release acceptance records under references are historical to post1, **not** approval for post2. The fallback is not platform identity authentication. No statistical algorithm, Gate invariant, token policy, Stage1–5 transition, PNG specification or research result has been changed.
+**R4H.4（dev15）起的新研究規範（R4H.4.1 保留）：** Stage 3 使用實際觀測的數值特徵空隙及一致性證據，或強烈的 MST 橋接線索，建立初步分離區域數，再優先規劃其鄰近 K；若沒有足夠證據則保留廣範圍探索。這些都是未擬合模型的 EDA，並非已證實的最佳 K。新 CLI `create` 研究將 Stage 3 的候選擬合與 Stage 4 Silhouette／80% 重抽樣 ARI 預算一次綁定授權，Stage 4 `fit_candidates` 完成後自動繼續已批准的 `diagnose_approved`；**不再設置中間結果確認 Hard Gate**，但最終 K 的 `propose_final`／`approve_final` 仍需要獨立使用者批准。新流程以 `stage4_auto_diagnostics=True` 與舊 Session 隔離，舊版授權紀錄不得自動遷移；任一失敗即停止，不得在舊授權下重試。GitHub README 與流程圖仍延後修改。

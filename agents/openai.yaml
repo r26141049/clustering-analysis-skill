@@ -1,7 +1,7 @@
 interface:
-  display_name: Clustering Analysis — Four-Method rc6
+  display_name: Clustering Analysis post4 R4H.4.1 Development
   short_description: Four methods with scoped gates and selection evidence
-  default_prompt: 以四法 rc6 分析資料；先完成 EDA 並等待前處理批准。
+  default_prompt: 以 post4 R4H.4 候選執行分群；Stage 3 以真實 EDA 分離線索提出鄰近 K，並一次核准擬合及 ARI 診斷預算；Stage 4 自動執行已授權工作，最終選群仍需獨立批准；不計算或展示 CH 與 Davies–Bouldin；保留 Hard Gate；Stage 5 明確揭露實際前處理與擬合參數；全研究禁止示意圖，只用已保存的真實 PNG，聊天僅單欄純文字 PNG 附件連結，禁止圖片內嵌或圖文並排；指標須先說明衡量內容；自動保存並恢復同一研究 Session，找不到有效狀態時安全停止；須揭露 Work 持久化及 Quarto 真人驗收未完成。
   icon_small: assets/icon.svg
   icon_large: assets/icon.svg
 policy:

@@ -21,7 +21,7 @@ spec.loader.exec_module(triage)
 
 def make_run(repeat, *, error=None, ari=0.9, positions=None):
     result = {"repeat": repeat, "row_positions": positions if positions is not None else [0, 2, 3],
-              "ari": None if error else ari, "cluster_jaccard": None if error else {"0": 0.8},
+              "ari": None if error else ari,
               "error": error}
     if not error:
         result["warnings"] = []
@@ -29,7 +29,7 @@ def make_run(repeat, *, error=None, ari=0.9, positions=None):
 
 
 def make_stability(runs):
-    return {"name": "common-ID subsampling ARI and max-Jaccard (NOT Hennig bootstrap)",
+    return {"name": "common-ID subsampling ARI",
             "fraction": 0.8, "repeats": len(runs), "seed": 17,
             "preprocessing_policy": "fixed_full_data_preprocessing",
             "runs": runs, "failures": sum(r["error"] is not None for r in runs)}

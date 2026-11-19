@@ -1,0 +1,42 @@
+{
+  "source_sha256": "2d9babfaea4e37b299c706c98836b1f449025770da8233f4f973b0da62513737",
+  "candidate_id": "post3-workflowfix-candidate01",
+  "status": "UNRELEASED_NOT_HOST_ACCEPTED",
+  "modified_or_added_files": [
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/SKILL.md",
+      "original_sha256": "b9d6440b45c35208e59f7c13d94a6223912566912639df07103e9e8db3d1db70",
+      "new_sha256": "f38688e6374d93eab5e88989dfaff1e1c7f961d6ab7fcdc7534b1a7ea9f8840c"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/scripts/test_post3_workflow_repair.py",
+      "original_sha256": null,
+      "new_sha256": "96069c8e1fe4adcb81d292ffde46fb5a9316cf265603372d6d365ef521ee0b7b"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/references/POST3_WORKFLOW_CANDIDATE01_REVIEW.md",
+      "original_sha256": null,
+      "new_sha256": "6b3b2e56a7096a75eac8e4056ad389bff2985b12c8be3bf6fafb8241fe512f34"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/clustering_native/suitability.py",
+      "original_sha256": "99557085f488c3c777530b1ed7ae158a3ae28eb35ac60874a3d80fbfa2be11c4",
+      "new_sha256": "88d66c1fc9852efffac9b4495ae1cc5ac03b7d3e271a4f25e48bc6314df17cb3"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/clustering_native/consent.py",
+      "original_sha256": "0cdf4983e470cc28c73c903b4cefbefa605fedfe560605998c16b6699187375d",
+      "new_sha256": "770b7e862a7bd49f21f1f1fe0c6e7286fb4afceec901f3b1c266fa1f427a7941"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/clustering_native/cli.py",
+      "original_sha256": "6155d84b2c1d70966d2b658a1bd4c8714d62c6b3cd57d141536dc75ac77107a7",
+      "new_sha256": "0410bb525ed1c3d36f0a512f84e169791a784980448d2caa400405c6666cc4d4"
+    },
+    {
+      "file": "skills/clustering-analysis-python-native-rc6/clustering_native/locking.py",
+      "original_sha256": "23c85fa7e6de3a4ebf8f84a1a16b966fe817ba85c5530f5031fec262b5e87258",
+      "new_sha256": "5b70ec3650cf0b6a8364a4631c7245d9234ff177453b9392ea7a7fbce0447b0f"
+    }
+  ]
+}

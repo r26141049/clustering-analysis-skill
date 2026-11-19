@@ -47,7 +47,7 @@ class WorkspaceTemp:
 
 METHODS = ("kmeans", "hierarchical", "dbscan", "pam")
 PENDING_RESEARCH = {"hopkins": "NOT VALIDATED", "vat": "NOT VALIDATED",
-                    "gap": "NOT VALIDATED", "hennig_bootstrap": "NOT VALIDATED"}
+                    "gap": "NOT VALIDATED"}
 
 
 def clean(value):
@@ -88,9 +88,10 @@ class Gate:
     User-message provenance is recorded, not authenticated by this local API.
     A qa_fixture decision can never serve as evidence of real-user acceptance.
     """
-    ORDER = {"preprocess": 1, "method": 2, "candidates": 3,
+    ORDER = {"roles": 1, "preprocess": 1, "method": 2, "candidates": 3,
              "results": 3, "final": 4, "delivery": 5}
     TRANSITIONS = {
+        "roles": ("S1_ROLE_REVIEW", "S1_ROLE_REVIEW", "S1_REVIEW"),
         "preprocess": ("S1_REVIEW", "S1_REVIEW", "S2_REVIEW"),
         "method": ("S2_REVIEW", "S2_REVIEW", "S3_PLAN"),
         "candidates": ("S3_PLAN", "S3_PERMISSION", "S3_EXECUTE"),
@@ -100,7 +101,7 @@ class Gate:
     AFFIRMATIVE = {"同意", "批准", "確認", "是", "a", "approve", "yes", "confirm"}
     TTL_SECONDS = 86400
     PHASE_REQUIREMENTS = {
-        "S1_REVIEW": (), "S2_REVIEW": ("preprocess",),
+        "S1_ROLE_REVIEW": (), "S1_REVIEW": (), "S2_REVIEW": ("preprocess",),
         "S3_PLAN": ("preprocess", "method"), "S3_PERMISSION": ("preprocess", "method"),
         "S3_EXECUTE": ("preprocess", "method", "candidates"),
         "S3_RESULTS": ("preprocess", "method", "candidates"),
@@ -114,6 +115,20 @@ class Gate:
             "auth_format": 2, "session_id": uuid.uuid4().hex,
             "phase": "S1_REVIEW", "revision": 0, "approvals": {},
             "payloads": {}, "proposals": {}, "events": [], "used_message_ids": [], "complete": False}
+        # Isolate Stage 4 candidate-execution transitions by session. Never
+        # silently migrate or re-authorize already approved historical studies.
+        self.TRANSITIONS = dict(type(self).TRANSITIONS)
+        self.PHASE_REQUIREMENTS = dict(type(self).PHASE_REQUIREMENTS)
+        if self.state.get('stage4_candidate_execution', False):
+            self.TRANSITIONS['candidates'] = ('S3_PLAN','S3_PERMISSION','S4_EXECUTE')
+            self.TRANSITIONS['results'] = ('S4_EXECUTE','S4_RESULTS','S4_REVIEW')
+            self.PHASE_REQUIREMENTS['S4_EXECUTE'] = ('preprocess','method','candidates')
+            self.PHASE_REQUIREMENTS['S4_RESULTS'] = ('preprocess','method','candidates')
+        if self.state.get('stage4_auto_diagnostics', False):
+            if not self.state.get('stage4_candidate_execution', False):
+                raise ValueError('Automatic Stage 4 diagnostics require Stage 4 candidate execution')
+            for phase in ('S4_REVIEW','S5_READY','S5_REVIEW','COMPLETE'):
+                self.PHASE_REQUIREMENTS[phase] = tuple(k for k in self.PHASE_REQUIREMENTS[phase] if k != 'results')
         if self.state.get("auth_format") != 2 or not self.state.get("session_id") or "used_message_ids" not in self.state:
             raise ValueError("RC1/legacy consent cannot be trusted as RC2 approval; start a new session and reconfirm")
 
@@ -130,7 +145,11 @@ class Gate:
         required = self.PHASE_REQUIREMENTS.get(self.state["phase"])
         if required is None:
             return 1
+        if self.state.get("role_gate_required") and self.state["phase"] not in ("S1_ROLE_REVIEW", "S1_REVIEW") and "roles" not in self.state["approvals"]:
+            return 1
         for key in required:
+            if key == 'roles' and not self.state.get('role_gate_required',False):
+                continue
             if key not in self.state["approvals"]:
                 return self.ORDER[key]
         for key in self.ORDER:
@@ -174,6 +193,10 @@ class Gate:
             raise PermissionError("Proposal item/stage/phase binding does not match the fixed workflow")
         self.expect(phase)
         prior = list(self.ORDER)[:list(self.ORDER).index(key)]
+        if not self.state.get("role_gate_required", False):
+            prior = [k for k in prior if k != "roles"]
+        if self.state.get('stage4_auto_diagnostics', False):
+            prior = [k for k in prior if k != 'results']
         if any(k not in self.state["approvals"] for k in prior):
             raise PermissionError("Prerequisite approvals missing")
         return self._new_proposal(key, payload, next_phase)
@@ -262,7 +285,7 @@ class Gate:
                 self.state["payloads"].pop(key, None)
                 self.state["proposals"].pop(key, None)
         self.state["complete"] = False
-        self.state["phase"] = {1: "S1_REVIEW", 2: "S2_REVIEW",
+        self.state["phase"] = {1: "S1_ROLE_REVIEW" if self.state.get("role_gate_required") else "S1_REVIEW", 2: "S2_REVIEW",
                                3: "S3_PLAN", 4: "S4_REVIEW", 5: "S5_READY"}[stage]
         self.event("revise", stage=stage, reason=reason)
 

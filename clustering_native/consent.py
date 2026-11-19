@@ -6,13 +6,14 @@ import re
 
 AFFIRMATIVE = {'a', '同意', '批准', '確認', '是', 'approve', 'yes', 'confirm'}
 SCOPES = {
+ 'roles': r'(?:目前的?|上述的?)?(?:變數角色|特徵角色|分群變數)(?:設定|方案)?',
  'preprocess': r'(?:目前的?|上述的?|這份)?(?:前處理|預處理)(?:方案|設定)',
  'method': r'(?:目前的?|當前的?)?(?:方法選擇|分群方法|方法)',
  'candidates': r'(?:目前的?|上述的?|這批|這八組|這六組)?(?:候選(?:方案|設定|參數)?|執行方案|計算預算|預算)',
  'results': r'(?:目前的?|上述的?|這批)?(?:執行結果|候選結果|本輪結果|結果)',
  'final': r'(?:目前的?|上述的?)?(?:最終模型|最終方案|最終研究方案|候選\s*\d+)',
  'delivery': r'(?:目前的?|上述的?|修訂版的?)?(?:最終交付|交付|研究報告|報告|修訂版)' }
-NEXT = {'preprocess':2,'method':3,'results':4,'final':5}
+NEXT = {'roles':1,'preprocess':2,'method':3,'results':4,'final':5}
 METHODS = {'dbscan','kmeans','hierarchical','pam'}
 
 
@@ -24,11 +25,18 @@ def _legacy_classify(response, item, payload=None):
     text=response.strip(); low=text.casefold()
     if re.search(r'(?:不要|不想|不需|不用|不必)(?:先)?(?:修改|調整|更改)',text):
         return {'value':'CLARIFY','reason':'negated revision request needs clarification'}
+    # A conditional/safety caveat mentioning a possible future change is not
+    # a current instruction to revise the pending proposal. Fail closed: ask
+    # for the single displayed A/B/C decision instead of revoking approvals.
+    if (re.search(r'(?:修改|調整|更改|改成|改為|修訂|變更|revise|modify|change)', low)
+            and re.search(r'(?:若|如果|如有|倘若|unless|if )', low)
+            and re.search(r'(?:批准|同意|approve|\bA\b)', text, re.I)):
+        return {'value':'CLARIFY','reason':'mixed approval and conditional revision caveat; choose the exact displayed option'}
     if re.search(r'(?:修改|調整|更改|改成|改為|修訂|變更|revise|modify|change)',low):
-        stage=1 if re.search(r'前處理|預處理|特徵|權重|縮放',text) else 2 if re.search(r'方法',text) else 3 if re.search(r'eps|min_samples|候選|參數|範圍',low) else {'preprocess':1,'method':2,'candidates':3,'results':3,'final':4,'delivery':5}[item]
+        stage=1 if re.search(r'前處理|預處理|特徵|權重|縮放',text) else 2 if re.search(r'方法',text) else 3 if re.search(r'eps|min_samples|候選|參數|範圍',low) else {'roles':1,'preprocess':1,'method':2,'candidates':3,'results':3,'final':4,'delivery':5}[item]
         return {'value':'REVISE','stage':stage,'reason':'revision takes precedence over approval'}
     if low in AFFIRMATIVE:return {'value':'APPROVE','reason':'exact affirmative for current pending item'}
-    if low in {'b','修改'}:return {'value':'REVISE','stage':{'preprocess':1,'method':2,'candidates':3,'results':3,'final':4,'delivery':5}[item],'reason':'revise option'}
+    if low in {'b','修改'}:return {'value':'REVISE','stage':{'roles':1,'preprocess':1,'method':2,'candidates':3,'results':3,'final':4,'delivery':5}[item],'reason':'revise option'}
     if low in {'c','拒絕','不同意','reject','no'} or re.fullmatch(r'(?:我)?不同意[，,。\s]*(?:請)?(?:先)?(?:不要|不得)執行[。！!\s]*',text):
         return {'value':'REJECT','reason':'explicit rejection'}
     if re.search(r'不同意|拒絕',text) and not re.search(r'(?<!不)同意|批准|確認|(?:^|[，, ])A(?:$|[，, ])',text):

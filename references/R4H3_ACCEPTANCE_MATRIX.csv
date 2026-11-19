@@ -1,0 +1,16 @@
+﻿ID,Scope,Status,Evidence_or_limitations
+R4H3-S3S4-WORKFLOW-MERGE-01,Stage 3 plan / Stage 4 fit + independent results gate,PASS,New CLI study with S4_EXECUTE and S4_RESULTS; old gate remains
+R4H3-S3-REDUNDANT-CANDIDATE-PLOT-01,Remove fixed-K execution count bars,PASS,New workflow does not create Stage3 candidate preview
+R4H3-METRIC-SIMPLIFICATION-01,Remove CH and Davies-Bouldin,PASS,"Engine, disclosure, evidence, report CSV and references"
+R4H3-EXPANSION-REUSE,New Stage 4 expansion reuses previous models and stability,PASS,New isolated test verifies exactly one new fit and stability batch
+R4H3-REAL-REPRO,Actual Stage 4 PAM resampling + strict replay,PASS,"2 candidates verified, exit code 0"
+R4G-SESSION-REGRESSION,Prior Session recovery,PASS,4/4 original tests
+R4H1-IMAGE-REGRESSION,PNG-link output and integrity,PASS,4/4 original tests
+R4H2-PREPROCESSING-REGRESSION,Stage 5 fitted preprocessing descriptions,PASS,7/7 original tests
+R4E-DBSCAN-LEGACY,Older Stage 4 real figures/report,PASS,Original integration test
+R4E-KMEANS-LEGACY,Older Stage 4 stability and initialization,PASS,Original integration test
+R4E-EXTENSION-FULL,Legacy full extended comparison,TIMEOUT,Do not count as passed
+R4H3-FIVE-METHOD-E2E,Full real five-method flow,NOT RUN,Isolated K-medoids E2E covered; full matrix pending
+HOST-UI,Actual ChatGPT display,NOT RUN,"PNG artifacts checked locally, host not verified"
+GITHUB-README-UPDATE-01,Public GitHub README update,DEFERRED,User explicitly requested no README changes yet
+GITHUB-FLOWCHART-UPDATE-01,Public workflow diagram update,DEFERRED,Remind user when GitHub upload begins
