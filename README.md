@@ -3,10 +3,11 @@
 **一套以 Python 為核心、具備階段式決策機制的無監督分群分析 Skill。**
 
 **目前開發候選：** `v1.0.0rc6.post4.dev16`（R4H.4.1，尚未正式發布）  
-**已發布測試版：** `v1.0.0rc6.post3`（GitHub Pre-release）  
+<!--**已發布測試版：** `v1.0.0rc6.post3`（GitHub Pre-release） --> 
 **開發語言：** Python  
 **研究領域：** Unsupervised Learning、Cluster Analysis、Applied Statistics
 
+<!--
 ### 版本與發布狀態
 
 #### post4 開發候選：v1.0.0rc6.post4.dev16
@@ -19,7 +20,7 @@
 
 post4.dev16 預計以 GitHub Pre-release 形式提供下載，包含對應版本的 Plugin ZIP。正式發布前將進行套件封裝與驗證；目前尚未建立新版 Tag、Release 或下載連結。本版本仍為開發候選，尚未通過全部必要功能驗收。
 
-<!--
+
 #### post3 已發布測試版：v1.0.0rc6.post3
 
 post3 已修復重現差異診斷（RC6-REPRO-01）及穩定性分析逾時問題（RC6-TIMEOUT-01）。
@@ -423,36 +424,3 @@ Skill 會根據資料內容提出分析建議。
 不同 ChatGPT 執行環境可能具有不同的圖片呈現方式。
 
 本專案以可開啟的 PNG 附件及離線 HTML 提供統計視覺化成果，並以明確的文字選項進行使用者決策。
-
----
-
-## 十一、未來發展
-
-未來可考慮：
-
-- 改善圖表在對話介面中的直接展示
-- 支援原生可點選決策元件
-- 擴充研究報告排版與匯出格式
-- 強化不同執行環境的自動驗收
-- 增加更多方法與資料情境的相容性測試
-
-所有新增方法及統計診斷均應經過獨立驗證後，再納入正式功能。
-
----
-
-## 十二、授權與引用
-
-本專案的開源授權條款以 Repository 中的 `LICENSE` 為準；公開前應確認相關第三方程式、文件及範例資料的使用權限。
-
-如需引用本專案，可使用以下格式：
-
-**Clustering Analysis Skill (v1.0.0rc6.post1). Python-based stage-gated unsupervised clustering research skill.**
-
----
-
-## 十三、作者
-
-**專案名稱：** Clustering Analysis Skill  
-**主題：** Unsupervised Learning / Clustering Analysis  
-**開發語言：** Python  
-**版本：** v1.0.0rc6.post2
